@@ -21,9 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BOOKS);
+        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BOOK);
         db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORROWER);
-        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORROWING);
+        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORRWING);
 
         onCreate(db);
     }

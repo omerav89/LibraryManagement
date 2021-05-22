@@ -46,5 +46,15 @@ public class DataAccess {
         return db.insert(BooksSchema.TABLE_BORROWING,"null",values);
     }
 
+    /*
+    delete book from db by name and copy number
+     */
+    public boolean delete_book(String book_name,int copy){
+
+        SQLiteDatabase db =helper.getWritableDatabase();
+
+        return db.delete("Books","bookName="+book_name+" AND copy="+copy ,null)>0;
+    }
+
 
 }
