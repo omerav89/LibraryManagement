@@ -15,13 +15,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(BooksSchema.CREATE_TABLE_BOOKS);
         db.execSQL(BooksSchema.CREATE_TABLE_BORROWER);
+        db.execSQL(BooksSchema.CREATE_TABLE_BORROWING);
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE " + BooksSchema.TABLE_Books);
+        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BOOKS);
         db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORROWER);
+        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORROWING);
 
         onCreate(db);
     }

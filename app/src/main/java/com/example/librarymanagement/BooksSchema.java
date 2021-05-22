@@ -24,16 +24,16 @@ public class BooksSchema {
     /*
     create borrower table
      */
-    protected static String CREATE_TABLE_BORROWER="CREATE TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected static String CREATE_TABLE_BORROWER="CREATE TABLE Borrowers (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " firstName TEXT NOT NULL," +
             " lastName TEXT NOT NULL," +
-            " phoneNumber TEXT NOT NULL,,"+
-            " email TEXT )";
+            " email TEXT NOT NULL,,"+
+            " phoneNumber TEXT )";
 
     /*
     for drop table borrower
      */
-    protected static String TABLE_BORROWER="TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected static String TABLE_BORROWER="TABLE Borrowers (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " firstName TEXT NOT NULL," +
             " lastName TEXT NOT NULL," +
             " phoneNumber TEXT NOT NULL,,"+
@@ -43,19 +43,23 @@ public class BooksSchema {
     create borrowing table
      */
     protected static String CREATE_TABLE_BORROWING="CREATE TABLE Borrowing (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " firstName TEXT NOT NULL," +
-            " lastName TEXT NOT NULL," +
-            " phoneNumber TEXT NOT NULL,,"+
-            " email TEXT )";
+            " Books_id INT NOT NULL," +
+            " Borrowers_id  INT NOT NULL," +
+            " takeDate DATE NOT NULL,"+
+            " returnDate DATE NOT NULL,"+
+            "FOREIGN KEY (Book_id) REFERENCES Books(_id),"+
+            "FOREIGN KEY (Borrowers_id) REFERENCES Borrowers(_id))";
 
     /*
     for drop table borrowing
      */
     protected static String TABLE_BORROWING="TABLE Borrowing (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " firstName TEXT NOT NULL," +
-            " lastName TEXT NOT NULL," +
-            " phoneNumber TEXT NOT NULL,,"+
-            " email TEXT )";
+            " Books_id INT NOT NULL," +
+            " Borrowers_id  INT NOT NULL," +
+            " takeDate DATE NOT NULL,"+
+            " returnDate DATE NOT NULL,"+
+            "FOREIGN KEY (Book_id) REFERENCES Books(_id),"+
+            "FOREIGN KEY (Borrowers_id) REFERENCES Borrowers(_id))";
 
     /*
     get all books from db
