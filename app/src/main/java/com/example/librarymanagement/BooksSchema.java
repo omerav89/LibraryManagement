@@ -5,16 +5,16 @@ public class BooksSchema {
     /*
     create books table
      */
-    protected static String CREATE_TABLE_Books="CREATE TABLE Books (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected static String CREATE_TABLE_BOOKS="CREATE TABLE Books (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " bookName TEXT NOT NULL," +
             " author TEXT NOT NULL," +
             " description TEXT,"+
             " copy INTEGER NOT NULL )";
 
     /*
-    for drop table
+    for drop table books
      */
-    protected static String TABLE_Books="TABLE Books (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected static String TABLE_BOOKS="TABLE Books (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " bookName TEXT NOT NULL," +
             " author TEXT NOT NULL," +
             " description TEXT,"+
@@ -24,16 +24,34 @@ public class BooksSchema {
     /*
     create borrower table
      */
-    protected static String CREATE_TABLE_Borrower="CREATE TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected static String CREATE_TABLE_BORROWER="CREATE TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " firstName TEXT NOT NULL," +
             " lastName TEXT NOT NULL," +
             " phoneNumber TEXT NOT NULL,,"+
             " email TEXT )";
 
     /*
-    for drop table
+    for drop table borrower
      */
-    protected static String TABLE_Borrower="TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected static String TABLE_BORROWER="TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " firstName TEXT NOT NULL," +
+            " lastName TEXT NOT NULL," +
+            " phoneNumber TEXT NOT NULL,,"+
+            " email TEXT )";
+
+    /*
+    create borrowing table
+     */
+    protected static String CREATE_TABLE_BORROWING="CREATE TABLE Borrowing (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " firstName TEXT NOT NULL," +
+            " lastName TEXT NOT NULL," +
+            " phoneNumber TEXT NOT NULL,,"+
+            " email TEXT )";
+
+    /*
+    for drop table borrowing
+     */
+    protected static String TABLE_BORROWING="TABLE Borrowing (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " firstName TEXT NOT NULL," +
             " lastName TEXT NOT NULL," +
             " phoneNumber TEXT NOT NULL,,"+
