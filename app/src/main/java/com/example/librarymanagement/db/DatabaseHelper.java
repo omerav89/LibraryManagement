@@ -1,4 +1,4 @@
-package com.example.librarymanagement;
+package com.example.librarymanagement.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE " + BooksSchema.TABLE_BOOK);
         db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORROWER);
-        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORRWING);
+        db.execSQL("DROP TABLE " + BooksSchema.TABLE_BORROWING);
 
         onCreate(db);
     }
