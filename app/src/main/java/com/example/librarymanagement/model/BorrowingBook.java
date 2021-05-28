@@ -41,6 +41,6 @@ public class BorrowingBook {
     public String toString()
     {
         return "Book ID = " + _book.get_id() + "; Borrower ID = " + _borrower.get_id() +
-                ";Take Date = " + _tdate.toString()+"; Return Date = " + _rdate;
+                ";Take Date = " + _tdate.toString()+"; Return Date = " + _rdate.toString();
     }
 }

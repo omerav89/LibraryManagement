@@ -4,6 +4,8 @@ public class BooksSchema {
 
     protected final static String databaseName = "LibraryDatabase.db";
 
+    /**********************************BOOK********************************************************/
+
     protected static String TABLE_BOOK="Books";
     public final static String COLUMN_BOOK_ID="_id";
     public final static String COLUMN_BOOK_NAME="bookName";
@@ -19,6 +21,9 @@ public class BooksSchema {
             " author TEXT NOT NULL," +
             " description TEXT,"+
             " copy INTEGER NOT NULL )";
+
+    /**********************************BORROWER***************************************************/
+
 
     protected static String TABLE_BORROWER="Borrower";
     public final static String COLUMN_BORROWER_ID="_id";
@@ -36,6 +41,8 @@ public class BooksSchema {
             " email TEXT NOT NULL,,"+
             " phoneNumber TEXT )";
 
+
+    /**********************************BORROWING**************************************************/
 
     protected static String TABLE_BORROWING="Borrowing";
     public final static String COLUMN_BORROWING_BOOK_ID="Books_id";
@@ -56,29 +63,4 @@ public class BooksSchema {
             "FOREIGN KEY (Borrowers_id) REFERENCES Borrowers)";
 
 
-    /*
-    get all books from db
-     */
-    protected static String GET_ALL_BOOKS="SELECT * FROM Books";
-
-    /*
-    get all books from db
-    only one show foreach book!
-     */
-    protected static String GET_ALL_BOOKS_DISTINCT="SELECT DISTINCT bookName FROM Books";
-
-    /*
-    get all books from db by book name
-     */
-    protected static String GET_ALL_BOOKS_BY_NAME="SELECT * FROM Books WHERE bookName=";
-
-    /*
-    get all books from db by book author
-     */
-    protected static String GET_ALL_BOOKS_BY_AUTHOR="SELECT * FROM Books WHERE author=";
-
-    /*
-    get copy of book by book name
-     */
-    protected static String GET_BOOK_COPY="SELECT copy FROM Books WHERE bookName=";
 }
