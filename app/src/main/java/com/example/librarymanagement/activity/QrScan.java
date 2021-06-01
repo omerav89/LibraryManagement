@@ -36,7 +36,7 @@ public class QrScan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_screen);
         surfaceView = findViewById(R.id.surface_view);
-        barcodeText = findViewById(R.id.barcode_text);
+
         initialiseDetectorsAndSources();
     }
 

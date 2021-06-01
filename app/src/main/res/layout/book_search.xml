@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/bookstatus"
+        android:layout_marginTop="45dp"
+        android:id="@+id/bookstatus"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Book"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_below="@id/bookstatus"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <EditText
+        android:id="@+id/bookname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookstatus"
+        android:hint="Book Name"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"/>
+
+
+
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="65dp"
+        android:layout_below="@+id/bookname"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="380dp"
+        android:text="QR Scan"
+        android:backgroundTint="#4AC4D8"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
