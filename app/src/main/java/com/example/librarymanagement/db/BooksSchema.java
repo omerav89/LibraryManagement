@@ -31,6 +31,7 @@ public class BooksSchema {
     public final static String COLUMN_BORROWERR_LAST_NAME="lastName";
     public final static String COLUMN_BORROWER_EMAIL="email";
     public final static String COLUMN_BORROWER_PHONE_NUMBER="phoneNumber";
+    public final static String COLUMN_BORROWER_ADDRESS="address";
 
     /*
   create borrower table
@@ -38,8 +39,9 @@ public class BooksSchema {
     protected static String CREATE_TABLE_BORROWER="CREATE TABLE Borrowers (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " firstName TEXT NOT NULL," +
             " lastName TEXT NOT NULL," +
-            " email TEXT NOT NULL,,"+
-            " phoneNumber TEXT )";
+            " email TEXT NOT NULL,"+
+            " phoneNumber TEXT,"+
+            "address TEXT NOT NULL)";
 
 
     /**********************************BORROWING**************************************************/

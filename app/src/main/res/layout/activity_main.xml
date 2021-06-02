@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".activity.HomeActivity"
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
     android:orientation="vertical">
@@ -26,6 +26,7 @@
         android:src="@drawable/calendar"
         android:layout_below="@+id/welcome"
         android:layout_marginTop="45dp"
+        android:clickable="true"
         android:id="@+id/calander"
         android:layout_alignParentLeft="true"/>
     <TextView
@@ -46,6 +47,7 @@
         android:src="@drawable/returnbook"
         android:layout_below="@+id/welcome"
         android:layout_marginTop="45dp"
+        android:clickable="true"
         android:id="@+id/returnbook"
         android:layout_alignParentRight="true"/>
     <TextView
@@ -63,6 +65,7 @@
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:src="@drawable/editbook"
+        android:clickable="true"
         android:layout_below="@+id/calander"
         android:layout_marginTop="45dp"
         android:id="@+id/editbook"
@@ -72,6 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Book"
+        android:clickable="true"
         android:layout_below="@id/editbook"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
@@ -87,6 +91,7 @@
         android:src="@drawable/report"
         android:layout_below="@+id/returnbook"
         android:layout_marginTop="45dp"
+        android:clickable="true"
         android:id="@+id/report"
         android:layout_alignParentRight="true"/>
     <TextView
@@ -107,6 +112,7 @@
         android:src="@drawable/bookstatus"
         android:layout_below="@+id/report"
         android:layout_marginTop="45dp"
+        android:clickable="true"
         android:id="@+id/status"
         android:layout_alignParentRight="true"/>
     <TextView
@@ -128,29 +134,26 @@
         android:layout_height="85dp"
         android:src="@drawable/add"
         android:layout_below="@+id/editbook"
+        android:clickable="true"
         android:layout_marginTop="45dp"
-        android:id="@+id/add"
+        android:id="@+id/addBook"
         android:layout_alignParentLeft="true"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Book"
-        android:layout_below="@id/add"
+        android:layout_below="@id/addBook"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
        />
-
-
-
-
-
 
     <ImageView
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:src="@drawable/remove"
-        android:layout_below="@+id/add"
+        android:layout_below="@+id/addBook"
+        android:clickable="true"
         android:layout_marginTop="45dp"
         android:id="@+id/remove"
          android:layout_centerHorizontal="true"/>
