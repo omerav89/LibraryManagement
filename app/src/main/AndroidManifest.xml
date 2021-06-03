@@ -18,13 +18,21 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.AddBookActivity"/>
+        <activity android:name=".activity.QrScan"/>
+        <activity android:name=".activity.SendSMS"/>
+        <activity android:name=".activity.BorrowBookActivity"/>
+        <activity android:name=".activity.ReportActivity"/>
+        <activity android:name=".activity.EditBookActivity"/>
+        <activity android:name=".activity.BookStatusActivity"/>
+        <activity android:name=".activity.SearchBookActivity"/>
     </application>
 
 </manifest>

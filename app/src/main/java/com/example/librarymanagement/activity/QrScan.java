@@ -25,7 +25,6 @@ public class QrScan extends AppCompatActivity {
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
-    private TextView barcodeText;
     private String barcodeData;
     private ToneGenerator toneGen1;
 
@@ -36,7 +35,10 @@ public class QrScan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_screen);
         surfaceView = findViewById(R.id.surface_view);
+<<<<<<< HEAD
 
+=======
+>>>>>>> d9b5f0b183f669bffce147f68fe576f2da981ee6
         initialiseDetectorsAndSources();
     }
 
@@ -94,25 +96,25 @@ public class QrScan extends AppCompatActivity {
                 if (barcodes.size() != 0) {
 
 
-                    barcodeText.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-
-                            if (barcodes.valueAt(0).email != null) {
-                                barcodeText.removeCallbacks(null);
-                                barcodeData = barcodes.valueAt(0).email.address;
-                                barcodeText.setText(barcodeData);
-                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
-                            } else {
-
-                                barcodeData = barcodes.valueAt(0).displayValue;
-                                barcodeText.setText(barcodeData);
-                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
-
-                            }
-                        }
-                    });
+//                    barcodeText.post(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//
+//                            if (barcodes.valueAt(0).email != null) {
+//                                barcodeText.removeCallbacks(null);
+//                                barcodeData = barcodes.valueAt(0).email.address;
+//                                barcodeText.setText(barcodeData);
+//                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+//                            } else {
+//
+//                                barcodeData = barcodes.valueAt(0).displayValue;
+//                                barcodeText.setText(barcodeData);
+//                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+//
+//                            }
+//                        }
+//                    });
 
                 }
             }
