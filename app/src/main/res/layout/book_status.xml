@@ -1,6 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/afterstatus"
+        android:layout_marginTop="45dp"
+        android:id="@+id/afterstatus"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_below="@id/afterstatus"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <TextView
+
+        android:id="@+id/fullname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/afterstatus"
+        android:text="Full Name"
+        android:textStyle="bold"
+        android:background="@drawable/shapeborder"
+        android:layout_marginTop="100dp"/>
+
+
+    <TextView
+        android:id="@+id/bookname"
+        android:text="Book Name"
+        android:background="@drawable/shapeborder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fullname"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        />
+
+
+    <TextView
+        android:id="@+id/returndate"
+        android:text="Return Date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookname"
+        android:background="@drawable/shapeborder"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"/>
+
+
+
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="65dp"
+        android:layout_below="@+id/returndate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="240dp"
+        android:text="Send Sms"
+        android:backgroundTint="#4AC4D8"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_alignParentRight="true"/>
+
+
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="65dp"
+        android:layout_below="@+id/returndate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="240dp"
+        android:text="Change Date"
+        android:backgroundTint="#4AC4D8"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"/>
+
+
+</RelativeLayout>

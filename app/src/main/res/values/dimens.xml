@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font_size_verysmall" />
+    <dimen name="font_size_small" />
+    <dimen name="font_size_medium" />
+</resources>

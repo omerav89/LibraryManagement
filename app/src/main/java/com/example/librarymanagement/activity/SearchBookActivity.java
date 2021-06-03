@@ -2,6 +2,8 @@ package com.example.librarymanagement.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +15,12 @@ public class SearchBookActivity extends AppCompatActivity {
     private final static String SENDING_ACTIVITY="sending_activity";
     private String incoming_activity="";
     private Intent intent=null;
-
+private EditText b_name;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_search);
-
+        b_name= findViewById(R.id.bookname);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
