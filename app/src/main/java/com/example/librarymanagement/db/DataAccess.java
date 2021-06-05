@@ -2,6 +2,7 @@ package com.example.librarymanagement.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -49,16 +50,18 @@ public class DataAccess {
 
     /**
      *Adds a book to the database
+     * @param barcode barcode number string
      * @param book_name Book name
      * @param author Author name
      * @param description Book description
      * @param copy_number Book copy number
      * @return The row id of the new book, -1 if the insert failed
      */
-    public long add_book(String book_name, String author, String description, int copy_number){
+    public long add_book(String barcode,String book_name, String author, String description, int copy_number){
         SQLiteDatabase db =helper.getWritableDatabase();
 
         ContentValues values=new ContentValues();
+        values.put(BooksSchema.COLUMN_BOOK_BARCODE,barcode);
         values.put(BooksSchema.COLUMN_BOOK_NAME,book_name);
         values.put(BooksSchema.COLUMN_BOOK_AUTHOR,author);
         values.put(BooksSchema.COLUMN_BOOK_DESCRIPTION,description);
@@ -75,6 +78,7 @@ public class DataAccess {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
                 new String[]{BooksSchema.COLUMN_BOOK_ID,
+                        BooksSchema.COLUMN_BOOK_BARCODE,
                         BooksSchema.COLUMN_BOOK_NAME,
                         BooksSchema.COLUMN_BOOK_AUTHOR,
                         BooksSchema.COLUMN_BOOK_DESCRIPTION},
@@ -92,6 +96,7 @@ public class DataAccess {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
                 new String[]{BooksSchema.COLUMN_BOOK_ID,
+                        BooksSchema.COLUMN_BOOK_BARCODE,
                         BooksSchema.COLUMN_BOOK_NAME,
                         BooksSchema.COLUMN_BOOK_AUTHOR,
                         BooksSchema.COLUMN_BOOK_DESCRIPTION,
@@ -103,6 +108,7 @@ public class DataAccess {
         if (cursor.moveToFirst()) {
             Book s = new Book(
                     cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_NAME)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_AUTHOR)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_DESCRIPTION)),
@@ -126,6 +132,7 @@ public class DataAccess {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
                 new String[]{BooksSchema.COLUMN_BOOK_ID,
+                        BooksSchema.COLUMN_BOOK_BARCODE,
                         BooksSchema.COLUMN_BOOK_NAME,
                         BooksSchema.COLUMN_BOOK_AUTHOR,
                         BooksSchema.COLUMN_BOOK_DESCRIPTION,
@@ -148,6 +155,7 @@ public class DataAccess {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
                 new String[]{BooksSchema.COLUMN_BOOK_ID,
+                        BooksSchema.COLUMN_BOOK_BARCODE,
                         BooksSchema.COLUMN_BOOK_NAME,
                         BooksSchema.COLUMN_BOOK_AUTHOR,
                         BooksSchema.COLUMN_BOOK_DESCRIPTION,
@@ -162,12 +170,13 @@ public class DataAccess {
         while (cursor.moveToNext()){
 
             int _id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID));
+            String barcode = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE));
             String bname = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_NAME));
             String author = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_AUTHOR));
             String description = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_DESCRIPTION));
             int copy = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_COPY));
 
-            Book book=new Book(_id,bname,author,description,copy);
+            Book book=new Book(_id,barcode,bname,author,description,copy);
             books[i]=book;
             i++;
 
@@ -185,13 +194,62 @@ public class DataAccess {
      * @param bid The Book ID to delete
      * @return The number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
      */
-    public int deleteBookById (int bid){
+    public long deleteBookById (int bid){
         // do the deletion
         SQLiteDatabase db = helper.getWritableDatabase();
         // do the delete query
         return db.delete(BooksSchema.TABLE_BOOK, BooksSchema.COLUMN_BOOK_ID + "=?",
                 new String[] {Integer.toString(bid)});
 
+    }
+
+    /**
+     * delete book by barcode
+     * @param b_barcode barcode number string
+     * @return The number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
+     */
+    public long deleteBookByBarcode (String b_barcode){
+        // do the deletion
+        SQLiteDatabase db = helper.getWritableDatabase();
+        // do the delete query
+        return db.delete(BooksSchema.TABLE_BOOK, BooksSchema.COLUMN_BOOK_BARCODE + "=?",
+                new String[] {b_barcode});
+    }
+
+    /**
+     * add one to number of copy's
+     * @param barcode book barcode to look for
+     * @param current_copy the current copy number
+     * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not
+     */
+    public int addOneToCopyByBarcode(String barcode,int current_copy){
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+        values.put(BooksSchema.COLUMN_BOOK_COPY,current_copy+1);
+
+        // do the update query
+        return db.update(BooksSchema.TABLE_BOOK,values,BooksSchema.COLUMN_BOOK_BARCODE + " = ? ",
+                new String[] {barcode, Integer.toString(current_copy+1)});
+    }
+
+    /**
+     * decrease one to number of copy's
+     * @param barcode book barcode to look for
+     * @param current_copy the current copy number
+     * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not
+     */
+    public int decreaseOneFromCopyByBarcode(String barcode,int current_copy){
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+        values.put(BooksSchema.COLUMN_BOOK_COPY,current_copy-1);
+
+        // do the update query
+        return db.update(BooksSchema.TABLE_BOOK,values,BooksSchema.COLUMN_BOOK_BARCODE + " = ? ",
+                new String[] {barcode, Integer.toString(current_copy-1)});
     }
     /**********************************BOOK END****************************************************/
 
@@ -402,7 +460,7 @@ public class DataAccess {
      * @param brid The borrower id
      * @param tdate The take date
      * @param rdate The return Date
-     * @return he number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
+     * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
      */
     public int deleteBorrowingBookById (int bid, int brid, String tdate,String rdate){
         // do the deletion
@@ -417,11 +475,11 @@ public class DataAccess {
 
     /**
      *
-     * @param bid
-     * @param brid
-     * @param tdate
-     * @param nrdate
-     * @return
+     * @param bid The book id
+     * @param brid The borrower id
+     * @param tdate The take date
+     * @param nrdate The new return Date
+     * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not
      */
     public int updateReturnDateByBookId(int bid,int brid, String tdate,String nrdate){
         // do the deletion

@@ -8,6 +8,7 @@ public class BooksSchema {
 
     protected static String TABLE_BOOK="Books";
     public final static String COLUMN_BOOK_ID="_id";
+    public final static String COLUMN_BOOK_BARCODE="barcode";
     public final static String COLUMN_BOOK_NAME="bookName";
     public final static String COLUMN_BOOK_AUTHOR ="author";
     public final static String COLUMN_BOOK_DESCRIPTION ="description";
@@ -17,6 +18,7 @@ public class BooksSchema {
        create books table
         */
     protected static String CREATE_TABLE_BOOKS="CREATE TABLE Books (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " barcode TEXT NOT NULL,"+
             " bookName TEXT NOT NULL," +
             " author TEXT NOT NULL," +
             " description TEXT,"+

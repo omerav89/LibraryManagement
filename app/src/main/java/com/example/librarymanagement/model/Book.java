@@ -2,21 +2,33 @@ package com.example.librarymanagement.model;
 
 public class Book {
 
-    private String _bname, _author, _description;
+    private String _bname, _author, _description, _barcode;
     private int _cnumber;
     private int _id;
 
 
 
-    public Book(int _id,String _bname, String _author, String _description, int _cnumber) {
+    public Book(int _id,String _barcode,String _bname, String _author, String _description, int _cnumber) {
         this._id=_id;
+        this._barcode=_barcode;
         this._bname = _bname;
         this._author = _author;
         this._description = _description;
         this._cnumber = _cnumber;
     }
 
+    public Book(int _id,String _barcode,String _bname, String _author, int _cnumber) {
+        this._id=_id;
+        this._barcode=_barcode;
+        this._bname = _bname;
+        this._author = _author;
+        this._description ="";
+        this._cnumber = _cnumber;
+    }
+
     public int get_id() {return _id;}
+
+    public String get_barcode() { return _barcode; }
 
     public String get_bname() {
         return _bname;
@@ -53,7 +65,7 @@ public class Book {
     @Override
     public String toString()
     {
-        return "ID = " + get_id() + "; Name = " + get_bname() +
+        return "ID = " + get_id() +"; Barcode = "+ get_barcode() +"; Name = " + get_bname() +
                 "; Author = " + get_author()+"; Description = " + get_description() +
                 "; Copy = " + get_cnumber();
     }
