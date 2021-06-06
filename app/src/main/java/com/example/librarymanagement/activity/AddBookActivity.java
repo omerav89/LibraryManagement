@@ -1,5 +1,6 @@
 package com.example.librarymanagement.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,18 +12,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.R;
+import com.example.librarymanagement.model.Book;
 
 public class AddBookActivity extends AppCompatActivity {
 
     private EditText b_name,b_author,summery;
     private Button add_btn;
-    private String barcode="234234";
+    private String barcode;
     private Integer copy_number=1;
-
+    private final static String SENDING_ACTIVITY="sending_activity";
+    private Book incoming_book;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_book);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                incoming_book= null;
+                barcode="";
+            } else {
+                incoming_book=(Book) extras.getSerializable(SENDING_ACTIVITY);
+                barcode= extras.getString("barcode");
+            }
+        } else {
+            incoming_book= (Book) savedInstanceState.getSerializable(SENDING_ACTIVITY);
+            barcode = savedInstanceState.getString("barcode");
+        }
+
 
         b_name=findViewById(R.id.bookname);
         b_author=findViewById(R.id.author);
@@ -40,6 +58,8 @@ public class AddBookActivity extends AppCompatActivity {
                            b_author.getText().toString(),summery.getText().toString(),copy_number);
 
                    Toast.makeText(AddBookActivity.this,"The book "+b_name.getText().toString()+" added with id: "+bid,Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(AddBookActivity.this,HomeActivity.class);
+                    startActivity(intent);
                 }
             }
         });

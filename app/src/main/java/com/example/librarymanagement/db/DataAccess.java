@@ -91,7 +91,7 @@ public class DataAccess {
     /**
      *Gets a book based on its ID
      * @param bid The book ID to look for
-     * @return The book as a book object.  Null if no such sailor in the database
+     * @return The book as a book object.  Null if no such book in the database
      */
     public Book getBookById(int bid) {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -104,6 +104,41 @@ public class DataAccess {
                         BooksSchema.COLUMN_BOOK_COPY},
                 BooksSchema.COLUMN_BOOK_ID + "=?",
                 new String[]{Integer.toString(bid)}, "", "", "");
+
+        // check if there are results
+        if (cursor.moveToFirst()) {
+            Book s = new Book(
+                    cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_NAME)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_AUTHOR)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_DESCRIPTION)),
+                    cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_COPY)));
+
+            cursor.close();
+            return s;
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
+    /**
+     *Gets a book based on its ID
+     * @param barcode The book barcode string to look for
+     * @return The book as a book object.  Null if no such book in the database
+     */
+    public Book getBookByBarcode(String barcode) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
+                new String[]{BooksSchema.COLUMN_BOOK_ID,
+                        BooksSchema.COLUMN_BOOK_BARCODE,
+                        BooksSchema.COLUMN_BOOK_NAME,
+                        BooksSchema.COLUMN_BOOK_AUTHOR,
+                        BooksSchema.COLUMN_BOOK_DESCRIPTION,
+                        BooksSchema.COLUMN_BOOK_COPY},
+                BooksSchema.COLUMN_BOOK_BARCODE + "=?",
+                new String[]{barcode}, "", "", "");
 
         // check if there are results
         if (cursor.moveToFirst()) {
@@ -228,11 +263,11 @@ public class DataAccess {
         SQLiteDatabase db = helper.getWritableDatabase();
 
         ContentValues values=new ContentValues();
-        values.put(BooksSchema.COLUMN_BOOK_COPY,current_copy+1);
+        values.put(BooksSchema.COLUMN_BOOK_COPY,(current_copy+1));
 
         // do the update query
         return db.update(BooksSchema.TABLE_BOOK,values,BooksSchema.COLUMN_BOOK_BARCODE + " = ? ",
-                new String[] {barcode, Integer.toString(current_copy+1)});
+                new String[] {barcode});
     }
 
     /**
