@@ -75,7 +75,8 @@ public class HomeActivity extends AppCompatActivity {
         add_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent=new Intent(HomeActivity.this, AddBookActivity.class);
+                intent=new Intent(HomeActivity.this, QrScan.class);
+                intent.putExtra(SENDING_ACTIVITY,"add");
                 startActivity(intent);
             }
         });

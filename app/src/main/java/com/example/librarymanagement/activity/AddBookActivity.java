@@ -9,12 +9,15 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.R;
 
 public class AddBookActivity extends AppCompatActivity {
 
     private EditText b_name,b_author,summery;
     private Button add_btn;
+    private String barcode="234234";
+    private Integer copy_number=1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,12 +36,10 @@ public class AddBookActivity extends AppCompatActivity {
                     Toast.makeText(AddBookActivity.this,"make sure to fill book name and author",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    if(summery.getText().toString().matches("")){
+                   long bid=DataAccess.getInstance(AddBookActivity.this).add_book(barcode,b_name.getText().toString(),
+                           b_author.getText().toString(),summery.getText().toString(),copy_number);
 
-                    }
-                    else {
-
-                    }
+                   Toast.makeText(AddBookActivity.this,"The book "+b_name.getText().toString()+" added with id: "+bid,Toast.LENGTH_SHORT).show();
                 }
             }
         });

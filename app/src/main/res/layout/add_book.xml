@@ -27,6 +27,7 @@
 
 
     <EditText
+        android:inputType="textNoSuggestions"
         android:id="@+id/bookname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
 
 
     <EditText
+        android:inputType="textNoSuggestions"
         android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +49,7 @@
 
 
     <EditText
+        android:inputType="textNoSuggestions"
         android:id="@+id/summery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
