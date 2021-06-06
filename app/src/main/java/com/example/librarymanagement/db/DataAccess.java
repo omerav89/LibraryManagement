@@ -12,6 +12,7 @@ import com.example.librarymanagement.model.Borrower;
 import com.example.librarymanagement.model.BorrowingBook;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -86,6 +87,50 @@ public class DataAccess {
                 "",null, "", "", "");
 
         return cursor;
+    }
+
+    /**
+     * Gets all of the books from the database
+     * @returnAn The books in an array.  If  the table us empty
+     * an empty array will be returned.
+     */
+
+    public ArrayList<Book> getBookList() {
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
+                new String[]{BooksSchema.COLUMN_BOOK_ID,
+                        BooksSchema.COLUMN_BOOK_BARCODE,
+                        BooksSchema.COLUMN_BOOK_NAME,
+                        BooksSchema.COLUMN_BOOK_AUTHOR,
+                        BooksSchema.COLUMN_BOOK_DESCRIPTION,
+                        BooksSchema.COLUMN_BOOK_COPY},
+                "",
+                new String[]{}, "", "", "");
+
+        ArrayList<Book> bookList= new ArrayList<>();
+
+
+
+        while (cursor.moveToNext()){
+
+            int _id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID));
+            String barcode = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE));
+            String bname = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_NAME));
+            String author = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_AUTHOR));
+            String description = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_DESCRIPTION));
+            int copy = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_COPY));
+
+            Book book=new Book(_id,barcode,bname,author,description,copy);
+            bookList.add(book);
+
+
+        }
+
+        // close up shop and return
+        cursor.close();
+        return null;
+
     }
 
     /**

@@ -67,7 +67,7 @@ public class QrScan extends AppCompatActivity implements ZXingScannerView.Result
         data_change=DataAccess.getInstance(this).addOneToCopyByBarcode(barcode_res,book.get_cnumber());
         if(data_change==1){
             Toast.makeText(this,"Add copy to the book "+book.get_bname()+
-                    "current copy number: "+book.get_cnumber()+1,Toast.LENGTH_SHORT).show();
+                    "current copy number: "+book.get_cnumber(),Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(this,"Couldn't add copy to the book "+book.get_bname()+
