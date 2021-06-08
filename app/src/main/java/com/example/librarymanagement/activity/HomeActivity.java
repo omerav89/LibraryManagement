@@ -1,9 +1,11 @@
 package com.example.librarymanagement.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +16,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView borrow_b,add_b,edit_b,return_b,report,b_status,remove_b;
     private Intent intent;
     private final static String SENDING_ACTIVITY="sending_activity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         borrow_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent=new Intent(HomeActivity.this, BorrowBookActivity.class);
+                intent=new Intent(HomeActivity.this, SearchBookActivity.class);
                 intent.putExtra(SENDING_ACTIVITY,"borrow");
                 startActivity(intent);
             }
