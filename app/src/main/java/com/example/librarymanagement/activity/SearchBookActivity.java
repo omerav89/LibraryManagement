@@ -131,8 +131,10 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater =getMenuInflater();
         inflater.inflate(R.menu.searchmen, menu);
+
         MenuItem searchItem= menu.findItem(R.id.action_search);
         SearchView searchView=(SearchView) searchItem.getActionView();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -141,7 +143,7 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });

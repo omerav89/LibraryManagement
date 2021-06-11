@@ -125,7 +125,7 @@ public class DataAccess {
 
         // close up shop and return
         cursor.close();
-        return null;
+        return bookList;
 
     }
 

@@ -8,11 +8,6 @@
     android:layout_marginRight="40dp"
     tools:context="com.example.librarymanagement.activity.SearchBookActivity">
 
-
-
-
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

@@ -58,6 +58,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
         if (!checkPermission()) {
             requestPermission();
         }
+
     }
 
     /**
@@ -204,10 +205,10 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
         switch (incoming_activity){
             case "add": book=DataAccess.getInstance(this).getBookByBarcode(barcode_res);
                 if (book==null){
-                    stop_loop=true;
                     intent=new Intent(QrScan.this,AddBookActivity.class);
                     intent.putExtra(SENDING_ACTIVITY, (Serializable) book);
                     intent.putExtra("barcode",barcode_res);
+                    startActivity(intent);
                 }
                 else {
                     showNoticeDialog();

@@ -13,13 +13,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        //create tables for thr data
         db.execSQL(BooksSchema.CREATE_TABLE_BOOKS);
         db.execSQL(BooksSchema.CREATE_TABLE_BORROWER);
         db.execSQL(BooksSchema.CREATE_TABLE_BORROWING);
 
-        /**********************************ADD-BOOKS**************************************************/
 
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (1,'123456' ,'Harry Potter and the Deathly Hallows','J.K. Rowling','alot of magic',7)");
+        /**********************************ADD-BOOKS**************************************************/
+        db.execSQL("insert into Books (_id, barcode, bookName, author,description,copy) VALUES (1,'123456' ,'Harry Potter and the Deathly Hallows','J.K. Rowling','alot of magic',7)");
         db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (2,'234561' ,'The Hunger Games','Suzanne Collins','you have to read this book',2)");
         db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (3,'345612' ,'The Book Thief','Markus Zusak','really nice book, try it',1)");
         db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (4,'456123' ,'The Time Travelers Wife','Audrey Niffenegger','must read it',1)");
