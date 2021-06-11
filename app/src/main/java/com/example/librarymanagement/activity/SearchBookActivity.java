@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.librarymanagement.Adapter.AdapterSearch;
 import com.example.librarymanagement.db.DataAccess;
@@ -29,7 +30,6 @@ import com.example.librarymanagement.db.DataAccess;
 
 public class SearchBookActivity extends AppCompatActivity implements Filterable {
     private AdapterSearch adapter;
-    private List<Book> bookList1;
     private final static String SENDING_ACTIVITY="sending_activity";
     private String incoming_activity="";
     private Intent intent=null;
@@ -58,40 +58,39 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
             incoming_activity= (String) savedInstanceState.getSerializable(SENDING_ACTIVITY);
         }
 
-        bookList=DataAccess.getInstance(this).getBookList();
-
     btn_qr.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent qrscan =new Intent(SearchBookActivity.this,QrScan.class);
+            qrscan.putExtra(SENDING_ACTIVITY,incoming_activity);
             startActivity(qrscan);
         }
     });
+
+
     switch (incoming_activity)
     {
-        case "borrow":
-            cursor=DataAccess.getInstance(this).getAllBooks();
+        case "borrow": bookList=DataAccess.getInstance(this).getBookList();
+        break;
     }
-        fillExampleList();
+
         setUpRecyclerView();
 
-
     }
-    private void fillExampleList() {
-       bookList = new ArrayList<>();
-        bookList.add(new Book(1,"123","masheo","omer","summery",1));
-        bookList.add(new Book(2,"143","mashego","omer","summddery",1));
-        bookList.add(new Book(3,"153","masdheo","omer","summggery",1));
 
-    }
     private void setUpRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        adapter = new AdapterSearch(bookList);
+        if(bookList==null || bookList.size()==0){
+            Toast.makeText(this,"There is no books in DB",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            adapter = new AdapterSearch(bookList);
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
 

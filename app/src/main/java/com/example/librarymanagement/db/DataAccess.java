@@ -17,14 +17,12 @@ import java.util.Date;
 import java.util.Hashtable;
 
 public class DataAccess {
-    private DatabaseHelper helper;
-    private static DataAccess instance = null;
-    //FirebaseDatabase storage;
-    private DataAccess(Context c) {
 
+    private static DataAccess instance = null;
+
+    private DataAccess(Context c) {
         context = c;
         helper = new DatabaseHelper(context, BooksSchema.databaseName, null, 1);
-        //storage = FirebaseDatabase.getInstance();
     }
 
     /**
@@ -44,9 +42,8 @@ public class DataAccess {
      * The context for the database helper
      */
     Context context;
-    /**
-     * The helper object to help open and close
-     */
+    private DatabaseHelper helper;
+
 
     /**********************************BOOK********************************************************/
 
@@ -94,7 +91,6 @@ public class DataAccess {
      * @returnAn The books in an array.  If  the table us empty
      * an empty array will be returned.
      */
-
     public ArrayList<Book> getBookList() {
 
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -110,20 +106,20 @@ public class DataAccess {
 
         ArrayList<Book> bookList= new ArrayList<>();
 
+        if(cursor.moveToFirst()){
+            // see if there are results
+            while (cursor.moveToNext()){
 
+                int _id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID));
+                String barcode = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE));
+                String bname = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_NAME));
+                String author = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_AUTHOR));
+                String description = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_DESCRIPTION));
+                int copy = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_COPY));
 
-        while (cursor.moveToNext()){
-
-            int _id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID));
-            String barcode = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE));
-            String bname = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_NAME));
-            String author = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_AUTHOR));
-            String description = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_DESCRIPTION));
-            int copy = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_COPY));
-
-            Book book=new Book(_id,barcode,bname,author,description,copy);
-            bookList.add(book);
-
+                Book book=new Book(_id,barcode,bname,author,description,copy);
+                bookList.add(book);
+            }
 
         }
 
@@ -574,6 +570,7 @@ public class DataAccess {
                 new String[] {Integer.toString(bid), Integer.toString(brid), tdate,nrdate});
     }
     /**********************************BORROWING END***********************************************/
+
 
 
 }

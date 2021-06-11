@@ -1,15 +1,23 @@
 package com.example.librarymanagement.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.librarymanagement.db.DataAccess;
+import com.example.librarymanagement.fragment.NoticeDialogFragment;
 import com.example.librarymanagement.model.Book;
 import com.google.zxing.Result;
 
@@ -18,8 +26,9 @@ import java.io.Serializable;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
-public class QrScan extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class QrScan extends FragmentActivity implements ZXingScannerView.ResultHandler, NoticeDialogFragment.NoticeDialogListener{
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
     private static final String TAG ="hii" ;
     private ZXingScannerView mScannerView;
     private final static String SENDING_ACTIVITY="sending_activity";
@@ -46,7 +55,108 @@ public class QrScan extends AppCompatActivity implements ZXingScannerView.Result
         } else {
             incoming_activity= (String) savedInstanceState.getSerializable(SENDING_ACTIVITY);
         }
+        if (!checkPermission()) {
+            requestPermission();
+        }
+    }
 
+    /**
+     * chek if user gave camera permission
+     * @return true if did else false
+     */
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * ask for camera permission
+     */
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
+    }
+
+    /**
+     * check permission result
+     * @param requestCode request code for camera
+     * @param permissions permission for what
+     * @param grantResults result
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermission();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    /**
+     * show message for asking permission
+     * @param message content of the message
+     * @param okListener listener for result
+     */
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(QrScan.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    /**
+     * show dialog box for asking if to add a book copy
+     */
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new NoticeDialogFragment();
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+    }
+
+    /**
+     * what to do if user touched the dialog's negative button
+     * @param dialog the dialog box
+     */
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        addCopy();
+        intent = new Intent(QrScan.this,HomeActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * what to do if user touched the dialog's positive button
+     * @param dialog the dialog box
+     */
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        intent = new Intent(QrScan.this,HomeActivity.class);
+        startActivity(intent);
     }
 
 
@@ -63,11 +173,17 @@ public class QrScan extends AppCompatActivity implements ZXingScannerView.Result
         mScannerView.stopCamera();           // Stop camera on pause
     }
 
+    /**
+     * add one copy to the current book
+     */
     public void addCopy(){
         data_change=DataAccess.getInstance(this).addOneToCopyByBarcode(barcode_res,book.get_cnumber());
+        int copy;
         if(data_change==1){
+            copy=book.get_cnumber();
+            copy+=1;
             Toast.makeText(this,"Add copy to the book "+book.get_bname()+
-                    "current copy number: "+book.get_cnumber(),Toast.LENGTH_SHORT).show();
+                    " current copy number: "+copy,Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(this,"Couldn't add copy to the book "+book.get_bname()+
@@ -75,42 +191,26 @@ public class QrScan extends AppCompatActivity implements ZXingScannerView.Result
         }
     }
 
+    /**
+     * handle the scan result
+     * @param rawResult the scan result
+     */
     @Override
     public void handleResult(Result rawResult) {
 
-        boolean found=false;
-        boolean book_copy=false;
-        final boolean add_or_not;
-        String res="";
         // get the result here
         barcode_res= rawResult.getText();
 
         switch (incoming_activity){
             case "add": book=DataAccess.getInstance(this).getBookByBarcode(barcode_res);
                 if (book==null){
+                    stop_loop=true;
                     intent=new Intent(QrScan.this,AddBookActivity.class);
                     intent.putExtra(SENDING_ACTIVITY, (Serializable) book);
                     intent.putExtra("barcode",barcode_res);
-                    found=true;
-                    stop_loop=true;
                 }
                 else {
-                    AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-                    dialog.setTitle("Book already exist");
-                    dialog.setMessage("Do you wish to add another copy?");
-                    dialog.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    addCopy();
-                                }
-                            });
-                    dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    dialog.create().show();
+                    showNoticeDialog();
                 }
                 break;
             case "borrow": ;
@@ -123,17 +223,6 @@ public class QrScan extends AppCompatActivity implements ZXingScannerView.Result
                 break;
             case "remove": ;
                 break;
-        }
-
-        // If you would like to resume scanning, call this method below:
-      //  mScannerView.resumeCameraPreview(this);
-
-        if(found){
-            startActivity(intent);
-        }
-        else {
-            intent = new Intent(QrScan.this,HomeActivity.class);
-            startActivity(intent);
         }
 
     }

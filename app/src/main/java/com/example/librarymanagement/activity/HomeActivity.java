@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         edit_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent=new Intent(HomeActivity.this,EditBookActivity.class);
+                intent=new Intent(HomeActivity.this,SearchBookActivity.class);
                 intent.putExtra(SENDING_ACTIVITY,"edit");
                 startActivity(intent);
             }
@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         b_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent=new Intent(HomeActivity.this, BookStatusActivity.class);
+                intent=new Intent(HomeActivity.this, SearchBookActivity.class);
                 intent.putExtra(SENDING_ACTIVITY,"status");
                 startActivity(intent);
             }
