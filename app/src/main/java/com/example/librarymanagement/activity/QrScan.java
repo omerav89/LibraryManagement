@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.fragment.NoticeDialogFragment;
 import com.example.librarymanagement.model.Book;
+import com.example.librarymanagement.model.BorrowingBook;
 import com.google.gson.Gson;
 import com.google.zxing.Result;
 
@@ -43,6 +44,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     private boolean stop_loop=false;
     private Gson gson = new Gson();
     private String book_obj_as_json="";
+    private BorrowingBook borrowingBook = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -232,7 +234,8 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                     intent.putExtra(SENDING_RESULT,book_obj_as_json );
                     startActivity(intent);
                 break;
-            case "status": ;
+            case "status": book =DataAccess.getInstance(this).getBookByBarcode(barcode_res);
+                //borrowingBook = DataAccess.getInstance(this).getBorrowingBookByBookId(book.get_id());
                 break;
             case "remove": ;
                 break;
