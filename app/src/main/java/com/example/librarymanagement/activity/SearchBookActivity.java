@@ -23,22 +23,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.librarymanagement.db.DataAccess;
+import com.example.librarymanagement.model.BorrowingBook;
+import com.google.gson.Gson;
 
 public class SearchBookActivity extends AppCompatActivity implements Filterable {
+
     private AdapterSearch adapter;
     private final static String SENDING_ACTIVITY="sending_activity";
+    private final static String SENDING_RESULT="sending_result";
     private String incoming_activity="";
     private Intent intent=null;
     private Button btn_qr;
     private EditText b_name;
     private ArrayList<Book>bookList= new ArrayList<>();
     private ArrayList<Book>bookListFull= new ArrayList<>();
+    private ArrayList <BorrowingBook> borrowingBookList = new ArrayList<>();
+    private ArrayList <BorrowingBook> borrowingBookFullList = new ArrayList<>();
     private Cursor cursor;
-
+    private Gson gson = new Gson();
+    private String book_obj_as_json="";
 
 
     @Override
@@ -46,7 +53,7 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_search);
         btn_qr= findViewById(R.id.qrscan);
-        b_name= findViewById(R.id.bookname);
+        b_name= findViewById(R.id.book_name);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -70,8 +77,14 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
 
     switch (incoming_activity)
     {
-        case "borrow": bookList=DataAccess.getInstance(this).getBookList();
-        break;
+        case "status":
+        case "return": borrowingBookList = DataAccess.getInstance(this).getAllBorrwingsList();
+            break;
+        case "edit":
+        case "borrow":
+        case "remove":
+            bookList = DataAccess.getInstance(this).getBookList();
+            break;
     }
 
         setUpRecyclerView();
@@ -90,6 +103,39 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
 
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
+
+            adapter.setOnItemClickListener(new AdapterSearch.OnItemClickListener() {
+                @Override
+                public void OnItemClick(int position) {
+
+                    Intent intent = null;
+
+                    switch (incoming_activity){
+                        case "borrow":
+                            book_obj_as_json = gson.toJson(bookList.get(position));
+                            intent=new Intent(SearchBookActivity.this,BorrowBookActivity.class);
+                            intent.putExtra(SENDING_RESULT,book_obj_as_json );
+                            startActivity(intent);
+                            break;
+                        case "return": ;
+                            break;
+                        case "edit":
+                            book_obj_as_json = gson.toJson(bookList.get(position));
+                            intent=new Intent(SearchBookActivity.this,EditBookActivity.class);
+                            intent.putExtra(SENDING_RESULT,book_obj_as_json );
+                            startActivity(intent);
+                            break;
+                        case "status":book_obj_as_json = gson.toJson(bookList.get(position));
+                            intent=new Intent(SearchBookActivity.this,BookStatusActivity.class);
+                            intent.putExtra(SENDING_RESULT,book_obj_as_json );
+                            startActivity(intent);
+                            break;
+                        case "remove": ;
+                            break;
+                    }
+
+                }
+            });
         }
     }
 

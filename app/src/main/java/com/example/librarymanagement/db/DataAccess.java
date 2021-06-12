@@ -293,11 +293,23 @@ public class DataAccess {
                 new String[] {b_barcode});
     }
 
+    public int updateBookData(String book_name,String author,String description){
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+        values.put(BooksSchema.COLUMN_BOOK_AUTHOR,author);
+        values.put(BooksSchema.COLUMN_BOOK_DESCRIPTION,description);
+
+        // do the update query
+        return db.update(BooksSchema.TABLE_BOOK,values,BooksSchema.COLUMN_BOOK_NAME + " = ? ",
+                new String[] {book_name});
+    }
+
     /**
      * add one to number of copy's
      * @param barcode book barcode to look for
      * @param current_copy the current copy number
-     * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not
+     * @return the number of rows updated.  Will be 1 if updated delete was successful and 0 if not
      */
     public int addOneToCopyByBarcode(String barcode,int current_copy){
 
@@ -315,7 +327,7 @@ public class DataAccess {
      * decrease one to number of copy's
      * @param barcode book barcode to look for
      * @param current_copy the current copy number
-     * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not
+     * @return the number of rows updated.  Will be 1 if the updated was successful and 0 if not
      */
     public int decreaseOneFromCopyByBarcode(String barcode,int current_copy){
 
@@ -467,6 +479,40 @@ public class DataAccess {
         return cursor;
     }
 
+    public ArrayList<BorrowingBook> getAllBorrwingsList(){
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
+                new String[]{BooksSchema.COLUMN_BORROWING_BOOK_ID,
+                        BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
+                        BooksSchema.COLUMN_BORROWING_TAKE_DATE,
+                        BooksSchema.COLUMN_BORROWING_RETURN_DATE},
+                "",null, "", "", "");
+
+        ArrayList<BorrowingBook>  borrowingBooksList= new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            // see if there are results
+            while (cursor.moveToNext()){
+
+                int book_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BOOK_ID));
+                int borrowing_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BORROWERS_ID));
+                String take_date = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE));
+                String return_date = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE));
+
+                Book book=getBookById(book_id);
+                Borrower borrower=getBorrowersById(borrowing_id);
+
+                BorrowingBook borrowingBook=new BorrowingBook(book,borrower,take_date,return_date);
+                borrowingBooksList.add(borrowingBook);
+            }
+
+        }
+
+        // close up shop and return
+        cursor.close();
+        return borrowingBooksList;
+    }
+
     /**
      * Gets the BorrowingBook for a given book by its ID.
      * @param bid The book ID to look for
@@ -520,8 +566,8 @@ public class DataAccess {
 
             // make the reservation
             BorrowingBook borrowingBooks = new BorrowingBook(theBook, theBorrower,
-                    new Date (cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE))),
-                    new Date(cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE))));
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE)));
             borrowingBook[i] = borrowingBooks;
             i++;
         }

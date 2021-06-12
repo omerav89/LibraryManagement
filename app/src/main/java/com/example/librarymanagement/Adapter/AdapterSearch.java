@@ -17,20 +17,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleViewHolder> implements Filterable {
+
     private List<Book> bookList;
     private List<Book> bookListFull;
+    private OnItemClickListener mListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void OnItemClick(int position);
+    }
 
     class ExampleViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView1;
         TextView textView2;
 
-        ExampleViewHolder(View itemView) {
+        ExampleViewHolder(View itemView , OnItemClickListener listener) {
             super(itemView);
 
             textView1 = itemView.findViewById(R.id.text_view1);
             textView2 = itemView.findViewById(R.id.text_view2);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.OnItemClick(position);
+                        }
+                    }
+                }
+            });
         }
+
+
     }
 
     public AdapterSearch(List<Book> bookList) {
@@ -43,7 +67,7 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleVie
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookitem,
                 parent, false);
-        return new ExampleViewHolder(v);
+        return new ExampleViewHolder(v,mListener);
     }
 
     @Override

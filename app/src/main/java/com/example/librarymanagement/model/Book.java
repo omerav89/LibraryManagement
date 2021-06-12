@@ -1,6 +1,9 @@
 package com.example.librarymanagement.model;
 
-public class Book {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Book implements Parcelable {
 
     private String _bname, _author, _description, _barcode;
     private int _cnumber;
@@ -25,6 +28,27 @@ public class Book {
         this._description ="";
         this._cnumber = _cnumber;
     }
+
+    protected Book(Parcel in) {
+        _bname = in.readString();
+        _author = in.readString();
+        _description = in.readString();
+        _barcode = in.readString();
+        _cnumber = in.readInt();
+        _id = in.readInt();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
 
     public int get_id() {return _id;}
 
@@ -68,5 +92,18 @@ public class Book {
         return "ID = " + get_id() +"; Barcode = "+ get_barcode() +"; Name = " + get_bname() +
                 "; Author = " + get_author()+"; Description = " + get_description() +
                 "; Copy = " + get_cnumber();
+    }
+
+    @Override
+    public int describeContents() { return 0;}
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_bname);
+        dest.writeString(_author);
+        dest.writeString(_description);
+        dest.writeString(_barcode);
+        dest.writeInt(_cnumber);
+        dest.writeInt(_id);
     }
 }

@@ -39,7 +39,7 @@
 
 
     <TextView
-        android:id="@+id/bookname"
+        android:id="@+id/book_name"
         android:text="Book Name"
         android:background="@drawable/shapeborder"
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
         android:text="Return Date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bookname"
+        android:layout_below="@+id/book_name"
         android:background="@drawable/shapeborder"
         android:textStyle="bold"
         android:layout_marginTop="40dp"/>

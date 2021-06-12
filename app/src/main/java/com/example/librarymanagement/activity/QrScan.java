@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.fragment.NoticeDialogFragment;
 import com.example.librarymanagement.model.Book;
+import com.google.gson.Gson;
 import com.google.zxing.Result;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     private static final String TAG ="hii" ;
     private ZXingScannerView mScannerView;
     private final static String SENDING_ACTIVITY="sending_activity";
+    private final static String SENDING_RESULT="sending_result";
     private String incoming_activity="";
     private Intent intent;
     enum Answer {YES,NO};
@@ -39,6 +41,8 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     private Book book = null;
     private int data_change=0;
     private boolean stop_loop=false;
+    private Gson gson = new Gson();
+    private String book_obj_as_json="";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,7 +145,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     }
 
     /**
-     * what to do if user touched the dialog's negative button
+     * what to do if user touched the dialog's positive button
      * @param dialog the dialog box
      */
     public void onDialogPositiveClick(DialogFragment dialog) {
@@ -151,7 +155,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     }
 
     /**
-     * what to do if user touched the dialog's positive button
+     * what to do if user touched the dialog's negative button
      * @param dialog the dialog box
      */
     @Override
@@ -214,11 +218,19 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                     showNoticeDialog();
                 }
                 break;
-            case "borrow": ;
+            case "borrow": book=DataAccess.getInstance(this).getBookByBarcode(barcode_res);
+                    book_obj_as_json = gson.toJson(book);
+                    intent=new Intent(QrScan.this,BorrowBookActivity.class);
+                    intent.putExtra(SENDING_RESULT,book_obj_as_json );
+                    startActivity(intent);
                 break;
             case "return": ;
                 break;
-            case "edit": ;
+            case "edit": book=DataAccess.getInstance(this).getBookByBarcode(barcode_res);
+                    book_obj_as_json = gson.toJson(book);
+                    intent=new Intent(QrScan.this,EditBookActivity.class);
+                    intent.putExtra(SENDING_RESULT,book_obj_as_json );
+                    startActivity(intent);
                 break;
             case "status": ;
                 break;

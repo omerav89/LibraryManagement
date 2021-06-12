@@ -42,7 +42,7 @@ public class AddBookActivity extends AppCompatActivity {
         }
 
 
-        b_name=findViewById(R.id.bookname);
+        b_name=findViewById(R.id.book_name);
         b_author=findViewById(R.id.author);
         summery=findViewById(R.id.summery);
         add_btn=findViewById(R.id.add_btn);

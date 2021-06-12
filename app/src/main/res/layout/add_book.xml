@@ -28,7 +28,7 @@
 
     <EditText
         android:inputType="textNoSuggestions"
-        android:id="@+id/bookname"
+        android:id="@+id/book_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/add"
@@ -42,7 +42,7 @@
         android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bookname"
+        android:layout_below="@+id/book_name"
         android:hint="Book Author"
         android:textStyle="bold"
         android:layout_marginTop="40dp"/>

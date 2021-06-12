@@ -16,7 +16,7 @@ private TextView f_name,b_name,return_d;
         setContentView(R.layout.book_status);
 
         f_name=findViewById(R.id.fullname);
-        b_name=findViewById(R.id.bookname);
+        b_name=findViewById(R.id.book_name);
         return_d=findViewById(R.id.returndate);
     }
 }
