@@ -44,7 +44,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     private boolean stop_loop=false;
     private Gson gson = new Gson();
     private String book_obj_as_json="";
-    private BorrowingBook borrowingBook = null;
+    private BorrowingBook borrowingBook[] = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -235,9 +235,39 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                     startActivity(intent);
                 break;
             case "status": book =DataAccess.getInstance(this).getBookByBarcode(barcode_res);
-                //borrowingBook = DataAccess.getInstance(this).getBorrowingBookByBookId(book.get_id());
+                    borrowingBook = DataAccess.getInstance(this).getBorrowingBookByBookId(book.get_id());
+                    book_obj_as_json = gson.toJson(borrowingBook);
+                    intent = new Intent(QrScan.this,BookStatusActivity.class);
+                    intent.putExtra(SENDING_RESULT,book_obj_as_json);
                 break;
-            case "remove": ;
+            case "remove":book = DataAccess.getInstance(this).getBookByBarcode(barcode_res);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Are you sure you want to delete the book: "+book.get_bname()+"?");
+                dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(book.get_cnumber()==1){
+                            int delete=DataAccess.getInstance(QrScan.this).deleteBookById(book.get_id());
+                            if(delete==1){
+                                Toast.makeText(QrScan.this,"The book "+book.get_bname()+" was deleted from database",Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(QrScan.this,"The book "+book.get_bname()+" was not deleted from database, try again later",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            int delete_copy = DataAccess.getInstance(QrScan.this).decreaseOneFromCopyByBarcode(book.get_barcode());
+                            Toast.makeText(QrScan.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 break;
         }
 

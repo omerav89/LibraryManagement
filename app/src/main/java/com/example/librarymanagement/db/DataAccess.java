@@ -271,7 +271,7 @@ public class DataAccess {
      * @param bid The Book ID to delete
      * @return The number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
      */
-    public long deleteBookById (int bid){
+    public int deleteBookById (int bid){
         // do the deletion
         SQLiteDatabase db = helper.getWritableDatabase();
         // do the delete query
@@ -285,7 +285,7 @@ public class DataAccess {
      * @param b_barcode barcode number string
      * @return The number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
      */
-    public long deleteBookByBarcode (String b_barcode){
+    public int deleteBookByBarcode (String b_barcode){
         // do the deletion
         SQLiteDatabase db = helper.getWritableDatabase();
         // do the delete query

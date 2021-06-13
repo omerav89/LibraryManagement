@@ -38,7 +38,7 @@ public class BooksSchema {
     /*
   create borrower table
    */
-    protected final static String CREATE_TABLE_BORROWER="CREATE TABLE Borrowers (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    protected final static String CREATE_TABLE_BORROWER="CREATE TABLE Borrower (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " firstName TEXT NOT NULL," +
             " lastName TEXT NOT NULL," +
             " email TEXT NOT NULL,"+
