@@ -54,6 +54,8 @@ public class EditBookActivity extends AppCompatActivity {
 
         if(book != null){
             b_name.setText(book.get_bname());
+            b_author.setText(book.get_author());
+            summery.setText(book.get_description());
         }
 
         save_btn.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +82,7 @@ public class EditBookActivity extends AppCompatActivity {
 
     public void updateBookData(){
         int result;
-        result= DataAccess.getInstance(this).updateBookData(b_name.getText().toString(),b_author.getText().toString(),summery.getText().toString());
+        result= DataAccess.getInstance(this).updateBookDataByName(b_name.getText().toString(),b_author.getText().toString(),summery.getText().toString());
         if(result==1){
             Toast.makeText(this,"The book "+book.get_bname()+" successfully updated",Toast.LENGTH_SHORT ).show();
         }

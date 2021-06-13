@@ -108,7 +108,7 @@ public class DataAccess {
 
         if(cursor.moveToFirst()){
             // see if there are results
-            while (cursor.moveToNext()){
+           do{
 
                 int _id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_ID));
                 String barcode = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BOOK_BARCODE));
@@ -119,7 +119,7 @@ public class DataAccess {
 
                 Book book=new Book(_id,barcode,bname,author,description,copy);
                 bookList.add(book);
-            }
+            } while (cursor.moveToNext());
 
         }
 
@@ -293,7 +293,14 @@ public class DataAccess {
                 new String[] {b_barcode});
     }
 
-    public int updateBookData(String book_name,String author,String description){
+    /**
+     * update author name/summery by book name
+     * @param book_name the book name to look for
+     * @param author the author (updated or same)
+     * @param description the summery (updated or same)
+     * @return number of row updated, 1 if change, else 0
+     */
+    public int updateBookDataByName(String book_name, String author, String description){
         SQLiteDatabase db = helper.getWritableDatabase();
 
         ContentValues values=new ContentValues();
@@ -492,7 +499,7 @@ public class DataAccess {
 
         if(cursor.moveToFirst()){
             // see if there are results
-            while (cursor.moveToNext()){
+           do{
 
                 int book_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BOOK_ID));
                 int borrowing_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BORROWERS_ID));
@@ -504,7 +511,7 @@ public class DataAccess {
 
                 BorrowingBook borrowingBook=new BorrowingBook(book,borrower,take_date,return_date);
                 borrowingBooksList.add(borrowingBook);
-            }
+            } while (cursor.moveToNext());
 
         }
 
@@ -543,34 +550,38 @@ public class DataAccess {
         Hashtable<Integer, Borrower> borrower = new Hashtable<>();
 
         int i = 0;
-        // see if there are results
-        while (cursor.moveToNext())
-        {
-            // get the Borrower for the row if we don't have it already
-            int borrowerId = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BORROWERS_ID));
-            Borrower theBorrower = null;
-            if (borrower.containsKey(borrowerId)) {
-                theBorrower = getBorrowersById(borrowerId);
-                borrower.put(borrowerId, theBorrower);
-            }
-            else
-            {
-                theBorrower = borrower.get(borrowerId);
-            }
 
-            // if the borrower doesn't exist, skip it
-            if ( theBorrower == null)
+        if(cursor.moveToFirst()){
+            // see if there are results
+            do
             {
-                continue;
-            }
+                // get the Borrower for the row if we don't have it already
+                int borrowerId = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BORROWERS_ID));
+                Borrower theBorrower = null;
+                if (borrower.containsKey(borrowerId)) {
+                    theBorrower = getBorrowersById(borrowerId);
+                    borrower.put(borrowerId, theBorrower);
+                }
+                else
+                {
+                    theBorrower = borrower.get(borrowerId);
+                }
 
-            // make the reservation
-            BorrowingBook borrowingBooks = new BorrowingBook(theBook, theBorrower,
-                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE)),
-                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE)));
-            borrowingBook[i] = borrowingBooks;
-            i++;
+                // if the borrower doesn't exist, skip it
+                if ( theBorrower == null)
+                {
+                    continue;
+                }
+
+                // make the reservation
+                BorrowingBook borrowingBooks = new BorrowingBook(theBook, theBorrower,
+                        cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE)),
+                        cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE)));
+                borrowingBook[i] = borrowingBooks;
+                i++;
+            }while (cursor.moveToNext());
         }
+
 
         // close up shop and return
         cursor.close();

@@ -14,7 +14,8 @@ import android.widget.Filterable;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.librarymanagement.Adapter.AdapterSearch;
+import com.example.librarymanagement.Adapter.AdapterSearchBook;
+import com.example.librarymanagement.Adapter.AdapterSearchBorrowingBook;
 import com.example.librarymanagement.db.DataAccess;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,8 @@ import com.google.gson.Gson;
 
 public class SearchBookActivity extends AppCompatActivity implements Filterable {
 
-    private AdapterSearch adapter;
+    private AdapterSearchBook bookAdapter;
+    private AdapterSearchBorrowingBook borrowingAdapter;
     private final static String SENDING_ACTIVITY="sending_activity";
     private final static String SENDING_RESULT="sending_result";
     private String incoming_activity="";
@@ -79,6 +81,7 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
     {
         case "status":
         case "return": borrowingBookList = DataAccess.getInstance(this).getAllBorrwingsList();
+            bookList = DataAccess.getInstance(this).getBookList();
             break;
         case "edit":
         case "borrow":
@@ -92,19 +95,44 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
     }
 
     private void setUpRecyclerView() {
+        boolean ok=false;
+        int adapter=0;
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        if(bookList==null || bookList.size()==0){
-            Toast.makeText(this,"There is no books in DB",Toast.LENGTH_SHORT).show();
+
+        switch (incoming_activity){
+            case "status":
+            case "return":
+                if(borrowingBookList==null || borrowingBookList.size()==0){
+                    Toast.makeText(this,"There is no borrowing in DB",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ok=true;
+                    adapter=2;
+                }
+                break;
+            case "edit":
+            case "borrow":
+            case "remove":
+                if(bookList==null || bookList.size()==0){
+                    Toast.makeText(this,"There is no borrowing in DB",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ok=true;
+                    adapter=1;
+                }
+                break;
         }
-        else {
-            adapter = new AdapterSearch(bookList);
+
+
+        if(ok && adapter==1 ) {
+            bookAdapter = new AdapterSearchBook(bookList);
 
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(bookAdapter);
 
-            adapter.setOnItemClickListener(new AdapterSearch.OnItemClickListener() {
+            bookAdapter.setOnItemClickListener(new AdapterSearchBook.OnItemClickListener() {
                 @Override
                 public void OnItemClick(int position) {
 
@@ -117,20 +145,39 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
                             intent.putExtra(SENDING_RESULT,book_obj_as_json );
                             startActivity(intent);
                             break;
-                        case "return": ;
-                            break;
                         case "edit":
                             book_obj_as_json = gson.toJson(bookList.get(position));
                             intent=new Intent(SearchBookActivity.this,EditBookActivity.class);
                             intent.putExtra(SENDING_RESULT,book_obj_as_json );
                             startActivity(intent);
                             break;
+                        case "remove": ;
+                            break;
+                    }
+
+                }
+            });
+        }
+
+        else if(ok && adapter==2 ) {
+            borrowingAdapter = new AdapterSearchBorrowingBook(borrowingBookList);
+
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(borrowingAdapter);
+
+            borrowingAdapter.setOnItemClickListener(new AdapterSearchBook.OnItemClickListener() {
+                @Override
+                public void OnItemClick(int position) {
+
+                    Intent intent = null;
+
+                    switch (incoming_activity){
+                        case "return": ;
+                            break;
                         case "status":book_obj_as_json = gson.toJson(bookList.get(position));
                             intent=new Intent(SearchBookActivity.this,BookStatusActivity.class);
                             intent.putExtra(SENDING_RESULT,book_obj_as_json );
                             startActivity(intent);
-                            break;
-                        case "remove": ;
                             break;
                     }
 
@@ -189,7 +236,7 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                bookAdapter.getFilter().filter(newText);
                 return false;
             }
         });

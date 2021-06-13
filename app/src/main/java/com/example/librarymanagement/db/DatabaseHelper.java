@@ -21,14 +21,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         /**********************************ADD-BOOKS**************************************************/
-        db.execSQL("insert into Books (_id, barcode, bookName, author,description,copy) VALUES (1,'123456' ,'Harry Potter and the Deathly Hallows','J.K. Rowling','alot of magic',7)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (2,'234561' ,'The Hunger Games','Suzanne Collins','you have to read this book',2)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (3,'345612' ,'The Book Thief','Markus Zusak','really nice book, try it',1)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (4,'456123' ,'The Time Travelers Wife','Audrey Niffenegger','must read it',1)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (5,'561234' ,'The Kite Runner','Khaled Hosseini','beautifull story',3)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (6,'612345' ,'The Help','Kathryn Stockett','help me alot in bad days',2)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (7,'162534' ,'A Thousand Splendid Suns','Khaled Hosseini','',1)");
-        db.execSQL("INSERT INTO Books (_id, barcode, bookName, author,description,copy) VALUES (8,'253416' ,'Water for Elephants','Sara Gruen','',4)");
+        db.execSQL("insert into Books (barcode, bookName, author,description,copy) VALUES ('123456' ,'Harry Potter and the Deathly Hallows','J.K. Rowling','alot of magic',7)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('234561' ,'The Hunger Games','Suzanne Collins','you have to read this book',2)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('345612' ,'The Book Thief','Markus Zusak','really nice book, try it',1)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('456123' ,'The Time Travelers Wife','Audrey Niffenegger','must read it',1)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('561234' ,'The Kite Runner','Khaled Hosseini','beautifull story',3)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('612345' ,'The Help','Kathryn Stockett','help me alot in bad days',2)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('162534' ,'A Thousand Splendid Suns','Khaled Hosseini','',1)");
+        db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('253416' ,'Water for Elephants','Sara Gruen','',4)");
 
     }
 

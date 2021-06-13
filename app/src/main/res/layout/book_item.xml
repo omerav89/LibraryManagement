@@ -19,7 +19,7 @@
             android:padding="2dp" />
 
         <TextView
-            android:id="@+id/text_view1"
+            android:id="@+id/book_name_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -31,10 +31,10 @@
             android:layout_toRightOf="@+id/image_view" />
 
         <TextView
-            android:id="@+id/text_view2"
+            android:id="@+id/author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_view1"
+            android:layout_below="@+id/book_name_item"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/image_view"
             android:text="Line 2"

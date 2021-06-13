@@ -42,7 +42,7 @@
         android:id="@+id/fname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/calander"
+        android:layout_below="@+id/title"
         android:hint="First Name"
         android:textStyle="bold"
         android:layout_marginTop="80dp"/>
@@ -110,6 +110,7 @@
         android:layout_height="65dp"
         android:layout_below="@+id/borrow"
         android:layout_centerHorizontal="true"
+        android:id="@+id/btn_borrow"
         android:layout_marginTop="40dp"
         android:text="Done"
         android:backgroundTint="#4AC4D8"

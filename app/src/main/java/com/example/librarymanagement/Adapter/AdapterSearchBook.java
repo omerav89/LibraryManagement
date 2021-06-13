@@ -12,14 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
+import com.example.librarymanagement.model.BorrowingBook;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleViewHolder> implements Filterable {
+public class AdapterSearchBook extends RecyclerView.Adapter<AdapterSearchBook.ExampleViewHolder> implements Filterable {
 
     private List<Book> bookList;
     private List<Book> bookListFull;
+    private List<BorrowingBook> borrowingBookList;
+    private List<BorrowingBook> borrowingBookListFull;
     private OnItemClickListener mListener;
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -32,14 +35,14 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleVie
 
     class ExampleViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView1;
-        TextView textView2;
+        TextView book_name_item;
+        TextView author_name;
 
         ExampleViewHolder(View itemView , OnItemClickListener listener) {
             super(itemView);
 
-            textView1 = itemView.findViewById(R.id.text_view1);
-            textView2 = itemView.findViewById(R.id.text_view2);
+            book_name_item = itemView.findViewById(R.id.book_name_item);
+            author_name = itemView.findViewById(R.id.author_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,7 +60,7 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleVie
 
     }
 
-    public AdapterSearch(List<Book> bookList) {
+    public AdapterSearchBook(List<Book> bookList) {
         this.bookList = bookList;
         bookListFull = new ArrayList<>(bookList);
     }
@@ -65,7 +68,7 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleVie
     @NonNull
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookitem,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item,
                 parent, false);
         return new ExampleViewHolder(v,mListener);
     }
@@ -74,9 +77,8 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ExampleVie
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
         Book currentItem = bookList.get(position);
 
-
-        holder.textView1.setText(currentItem.get_bname());
-        holder.textView2.setText(currentItem.get_author());
+        holder.book_name_item.setText(currentItem.get_bname());
+        holder.author_name.setText(currentItem.get_author());
     }
 
     @Override

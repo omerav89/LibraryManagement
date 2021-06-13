@@ -1,6 +1,8 @@
 package com.example.librarymanagement.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ public class BorrowBookActivity extends AppCompatActivity {
     private EditText f_name,l_name,p_number,mail;
     private Book book=null;
     private TextView book_title;
+    private Button btn_borrow;
     private final static String SENDING_RESULT="sending_result";
     Gson gson= new Gson();
     String book_data;
@@ -25,12 +28,12 @@ public class BorrowBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.borrow_book);
 
-        f_name=findViewById(R.id.fname);
-        l_name=findViewById(R.id.lname);
-        p_number=findViewById(R.id.phonenum);
-        mail=findViewById(R.id.mailaddress);
-        book_title=findViewById(R.id.book_title);
-
+        f_name = findViewById(R.id.fname);
+        l_name = findViewById(R.id.lname);
+        p_number = findViewById(R.id.phonenum);
+        mail = findViewById(R.id.mailaddress);
+        book_title = findViewById(R.id.book_title);
+        btn_borrow = findViewById(R.id.btn_borrow);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -49,6 +52,12 @@ public class BorrowBookActivity extends AppCompatActivity {
             book_title.setText(book.get_bname());
         }
 
+        btn_borrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
     }
