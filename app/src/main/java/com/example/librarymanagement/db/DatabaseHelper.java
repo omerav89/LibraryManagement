@@ -29,7 +29,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('612345' ,'The Help','Kathryn Stockett','help me alot in bad days',2)");
         db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('162534' ,'A Thousand Splendid Suns','Khaled Hosseini','',1)");
         db.execSQL("INSERT INTO Books ( barcode, bookName, author,description,copy) VALUES ('253416' ,'Water for Elephants','Sara Gruen','',4)");
-
+        db.execSQL("INSERT INTO Borrower ( firstName, lastName, email,phoneNumber) VALUES ('hod' ,'nahum','qafrasdf@walla.com','0524817523')");
+        db.execSQL("INSERT INTO Borrowing ( Books_id, Borrowers_id, takeDate,returnDate) VALUES (1 ,1,'21.35.56','18/12/21')");
     }
 
 

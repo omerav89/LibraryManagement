@@ -82,8 +82,8 @@
         android:layout_marginTop="30dp"/>
 
 
-    <EditText
-        android:id="@+id/returnd"
+    <Button
+        android:id="@+id/borrow"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mailaddress"
@@ -91,11 +91,12 @@
         android:inputType="date"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        />
 
 
-    <EditText
-        android:id="@+id/borrow"
+    <Button
+        android:id="@+id/return_d"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mailaddress"
@@ -103,7 +104,8 @@
         android:inputType="date"
         android:textStyle="bold"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+       />
 
     <Button
         android:layout_width="200dp"

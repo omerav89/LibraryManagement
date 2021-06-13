@@ -368,7 +368,7 @@ public class DataAccess {
         values.put(BooksSchema.COLUMN_BORROWERR_LAST_NAME,last_name);
         values.put(BooksSchema.COLUMN_BORROWER_EMAIL,email);
         values.put(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER,phone_number);
-        values.put(BooksSchema.COLUMN_BORROWER_ADDRESS,address);
+
         return db.insert(BooksSchema.TABLE_BORROWER,"null",values);
     }
 
@@ -383,8 +383,8 @@ public class DataAccess {
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
                         BooksSchema.COLUMN_BORROWER_EMAIL,
-                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER,
-                        BooksSchema.COLUMN_BORROWER_ADDRESS},
+                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
+                        },
                 "",null, "", "", "");
 
         return cursor;
@@ -397,13 +397,13 @@ public class DataAccess {
      */
     public Borrower getBorrowersById(int bid) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
+        Cursor cursor = db.query(BooksSchema.TABLE_BORROWER,
                 new String[]{BooksSchema.COLUMN_BORROWER_ID,
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
                         BooksSchema.COLUMN_BORROWER_EMAIL,
-                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER,
-                        BooksSchema.COLUMN_BORROWER_ADDRESS},
+                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
+                        },
                 BooksSchema.COLUMN_BORROWER_ID + "=?",
                 new String[]{Integer.toString(bid)}, "", "", "");
 
@@ -414,8 +414,7 @@ public class DataAccess {
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_FIRST_NAME)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWERR_LAST_NAME)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_EMAIL)),
-                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER)),
-                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_ADDRESS)));
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER)));
 
             cursor.close();
             return s;
@@ -438,8 +437,8 @@ public class DataAccess {
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
                         BooksSchema.COLUMN_BORROWER_EMAIL,
-                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER,
-                        BooksSchema.COLUMN_BORROWER_ADDRESS},
+                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
+                        },
                 BooksSchema.COLUMN_BORROWER_ID + "=?",
                 new String[]{Integer.toString(bid)}, "", "", "");
 
@@ -610,12 +609,11 @@ public class DataAccess {
     /**
      *
      * @param bid The book id
-     * @param brid The borrower id
-     * @param tdate The take date
+
      * @param nrdate The new return Date
      * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not
      */
-    public int updateReturnDateByBookId(int bid,int brid, String tdate,String nrdate){
+    public int updateReturnDateByBookId(int bid,String nrdate){
         // do the deletion
         SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -624,7 +622,7 @@ public class DataAccess {
 
         // do the delete query
         return db.update(BooksSchema.TABLE_BORROWING,values,BooksSchema.COLUMN_BORROWING_BOOK_ID + " = ? ",
-                new String[] {Integer.toString(bid), Integer.toString(brid), tdate,nrdate});
+                new String[] {Integer.toString(bid)});
     }
     /**********************************BORROWING END***********************************************/
 

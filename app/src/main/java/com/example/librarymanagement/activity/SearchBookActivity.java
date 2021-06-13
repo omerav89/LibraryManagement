@@ -9,11 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import com.example.librarymanagement.Adapter.AdapterSearchBook;
 import com.example.librarymanagement.Adapter.AdapterSearchBorrowingBook;
 import com.example.librarymanagement.db.DataAccess;
@@ -21,17 +18,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import com.example.librarymanagement.model.BorrowingBook;
 import com.google.gson.Gson;
 
-public class SearchBookActivity extends AppCompatActivity implements Filterable {
+
+
+
+public class SearchBookActivity extends AppCompatActivity  {
 
     private AdapterSearchBook bookAdapter;
     private AdapterSearchBorrowingBook borrowingAdapter;
@@ -174,7 +170,7 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
                     switch (incoming_activity){
                         case "return": ;
                             break;
-                        case "status":book_obj_as_json = gson.toJson(bookList.get(position));
+                        case "status":book_obj_as_json = gson.toJson(borrowingBookList.get(position));
                             intent=new Intent(SearchBookActivity.this,BookStatusActivity.class);
                             intent.putExtra(SENDING_RESULT,book_obj_as_json );
                             startActivity(intent);
@@ -187,38 +183,8 @@ public class SearchBookActivity extends AppCompatActivity implements Filterable 
     }
 
 
-    @Override
-    public Filter getFilter() {
-        return bookFilter;
-    }
 
-    private final Filter bookFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Book> filteredBook = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                filteredBook.addAll(bookListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Book item : bookListFull) {
-                    if (item.get_bname().toLowerCase().contains(filterPattern)) {
-                        filteredBook.add(item);
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values = filteredBook;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            bookList.clear();
-            bookList.addAll((List) results.values);
-            //to do refresh!
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

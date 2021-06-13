@@ -13,10 +13,10 @@
 
         <ImageView
             android:id="@+id/image_view"
-            android:src="@drawable/openbook"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="2dp" />
+            android:padding="2dp"
+            android:src="@drawable/openbook" />
 
         <TextView
             android:id="@+id/book_name"
@@ -31,9 +31,12 @@
             android:layout_toRightOf="@+id/image_view" />
 
         <LinearLayout
+            android:layout_below="@+id/book_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="50dp"
+           >
 
             <TextView
                 android:id="@+id/borrower_name"
