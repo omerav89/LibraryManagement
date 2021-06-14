@@ -65,6 +65,7 @@
     <Button
         android:layout_width="125dp"
         android:layout_height="65dp"
+        android:id="@+id/send_sms_btn"
         android:layout_below="@+id/returndate"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="240dp"

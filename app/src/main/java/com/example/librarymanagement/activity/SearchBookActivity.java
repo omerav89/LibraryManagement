@@ -65,28 +65,28 @@ public class SearchBookActivity extends AppCompatActivity  {
             incoming_activity= (String) savedInstanceState.getSerializable(SENDING_ACTIVITY);
         }
 
-    btn_qr.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent qrscan =new Intent(SearchBookActivity.this,QrScan.class);
-            qrscan.putExtra(SENDING_ACTIVITY,incoming_activity);
-            startActivity(qrscan);
+        btn_qr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent qrscan =new Intent(SearchBookActivity.this,QrScan.class);
+                qrscan.putExtra(SENDING_ACTIVITY,incoming_activity);
+                startActivity(qrscan);
+            }
+        });
+
+
+        switch (incoming_activity)
+        {
+            case "status":
+            case "return": borrowingBookList = DataAccess.getInstance(this).getAllBorrwingsList();
+                bookList = DataAccess.getInstance(this).getBookList();
+                break;
+            case "edit":
+            case "borrow":
+            case "remove":
+                bookList = DataAccess.getInstance(this).getBookList();
+                break;
         }
-    });
-
-
-    switch (incoming_activity)
-    {
-        case "status":
-        case "return": borrowingBookList = DataAccess.getInstance(this).getAllBorrwingsList();
-            bookList = DataAccess.getInstance(this).getBookList();
-            break;
-        case "edit":
-        case "borrow":
-        case "remove":
-            bookList = DataAccess.getInstance(this).getBookList();
-            break;
-    }
 
         setUpRecyclerView();
 

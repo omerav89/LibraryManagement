@@ -32,7 +32,7 @@ public class BookStatusActivity extends AppCompatActivity {
     private String book_data;
     private final static String SENDING_RESULT="sending_result";
     private DatePickerDialog datePickerDialog;
-    private Button dateButton;
+    private Button dateButton,send_sms_btn;
 
 
 
@@ -41,11 +41,13 @@ public class BookStatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_status);
         initDatePicker();
-        dateButton = findViewById(R.id.changeDate);
 
-        f_name=findViewById(R.id.fullname);
-        b_name=findViewById(R.id.book_name);
-        return_d=findViewById(R.id.returndate);
+        dateButton = findViewById(R.id.changeDate);
+        f_name = findViewById(R.id.fullname);
+        b_name = findViewById(R.id.book_name);
+        return_d = findViewById(R.id.returndate);
+        send_sms_btn = findViewById(R.id.send_sms_btn);
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -63,24 +65,22 @@ public class BookStatusActivity extends AppCompatActivity {
             b_name.setText(borrowingBook.get_book().get_bname());
             return_d.setText(borrowingBook.get_rdate());
         }
-    dateButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             openDatePicker(v);
         }
-    });
+        });
 
-    }
-
-
-    private String getTodaysDate()
-    {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month = month + 1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
+        send_sms_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String borrowing_obj_to_json = gson.toJson(borrowingBook);
+                Intent intent = new Intent(BookStatusActivity.this,SendSMS.class);
+                intent.putExtra(SENDING_RESULT,borrowing_obj_to_json);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initDatePicker()
@@ -92,31 +92,33 @@ public class BookStatusActivity extends AppCompatActivity {
             {
                 month = month + 1;
 
-                String date = makeDateString(day, month, year);
-                date.replace(" ","-");
-                String replasrDate =getTodaysDate();
-                replasrDate.replace(" ","-");
+                String newReturnDate = makeDateString(day, month, year);
+                newReturnDate.replace(" ","/");
+                String oldTakeDate =borrowingBook.get_tdate();
                 try {
 
-                    Date date1= new SimpleDateFormat("dd/MM/yyyy hh:mm:ff").parse(date);
-                    Date date2= new SimpleDateFormat("dd/MM/yyyy hh:mm:ff").parse(replasrDate);
-                    if (date2.after(date1))
+                    Date newDate= new SimpleDateFormat("dd/MM/yyyy").parse(newReturnDate);
+                    Date oldDate= new SimpleDateFormat("dd/MM/yyyy").parse(oldTakeDate);
+                    if (oldDate.after(newDate))
                     {
                         Toast.makeText(BookStatusActivity.this,"The Date is not Correct!",Toast.LENGTH_LONG).show();
                     }
                     else
                         {
-                            int ok = DataAccess.getInstance(BookStatusActivity.this).updateReturnDateByBookId(borrowingBook.get_book().get_id(),date);
+                            int ok = DataAccess.getInstance(BookStatusActivity.this).updateReturnDateByBookId(borrowingBook.get_book().get_id(),newReturnDate);
                             if(ok==1)
                             {
-                                return_d.setText(date);
+                                return_d.setText(newReturnDate);
                                 Toast.makeText(BookStatusActivity.this,"The Date Updated !",Toast.LENGTH_LONG).show();
                                 Intent intent= new Intent(BookStatusActivity.this,HomeActivity.class);
                                 startActivity(intent);
-                            }else
-                                {
-                                Toast.makeText(BookStatusActivity.this,"The Date Not Updated Pleas try again later !",Toast.LENGTH_LONG).show();
-                                }
+                            }
+                            else {
+                                Toast.makeText(BookStatusActivity.this, "The Date Not Updated Pleas try again later !", Toast.LENGTH_LONG).show();
+                                Intent intent= new Intent(BookStatusActivity.this,HomeActivity.class);
+                                startActivity(intent);
+                            }
+
                         }
 
                 } catch (ParseException e) {

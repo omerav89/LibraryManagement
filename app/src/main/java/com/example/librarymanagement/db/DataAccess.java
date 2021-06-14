@@ -357,10 +357,9 @@ public class DataAccess {
      * @param last_name borrower last name
      * @param email borrower email
      * @param phone_number borrower phone number
-     * @param address borrower address
      * @return The row id of the new borrower, -1 if the insert failed
      */
-    public long add_borrower(String first_name, String last_name, String email, String phone_number,String address){
+    public long add_borrower(String first_name, String last_name, String email, String phone_number){
         SQLiteDatabase db =helper.getWritableDatabase();
 
         ContentValues values=new ContentValues();
