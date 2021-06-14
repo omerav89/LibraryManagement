@@ -22,6 +22,7 @@ import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.model.BorrowingBook;
 import com.google.gson.Gson;
 import com.google.zxing.Result;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import java.io.Serializable;
 
@@ -246,7 +247,7 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                 dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        dialog.dismiss();
                     }
                 });
                 dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -262,11 +263,19 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                             }
                         }
                         else {
-                            int delete_copy = DataAccess.getInstance(QrScan.this).decreaseOneFromCopyByBarcode(book.get_barcode());
-                            Toast.makeText(QrScan.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_SHORT).show();
+                            int delete_copy = DataAccess.getInstance(QrScan.this).decreaseOneFromCopyByBarcode(book.get_barcode(),book.get_cnumber());
+                            if(delete_copy==1){
+                                Toast.makeText(QrScan.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(QrScan.this,"Problem in deleting copy of "+book.get_bname()+" try again later",Toast.LENGTH_SHORT).show();
+                            }
                         }
+                        Intent intent=new Intent(QrScan.this,HomeActivity.class);
+                        startActivity(intent);
                     }
                 });
+                dialog.show();
 
                 break;
         }
