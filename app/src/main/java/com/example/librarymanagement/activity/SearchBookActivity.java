@@ -1,5 +1,6 @@
 package com.example.librarymanagement.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.example.librarymanagement.Adapter.AdapterSearchBook;
 import com.example.librarymanagement.Adapter.AdapterSearchBorrowingBook;
 import com.example.librarymanagement.db.DataAccess;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -147,7 +149,41 @@ public class SearchBookActivity extends AppCompatActivity  {
                             intent.putExtra(SENDING_RESULT,book_obj_as_json );
                             startActivity(intent);
                             break;
-                        case "remove": ;
+                        case "remove":Book book = DataAccess.getInstance(SearchBookActivity.this).getBookById(bookList.get(position).get_id());
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
+                            dialog.setMessage("Are you sure you want to delete the book: "+book.get_bname()+"?");
+                            dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(book.get_cnumber()==1){
+                                        int delete=DataAccess.getInstance(SearchBookActivity.this).deleteBookById(book.get_id());
+                                        if(delete==1){
+                                            Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                        }
+                                        else {
+                                            Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was not deleted from database, try again later",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    else {
+                                        int delete_copy = DataAccess.getInstance(SearchBookActivity.this).decreaseOneFromCopyByBarcode(book.get_barcode(),book.get_cnumber());
+                                        if(delete_copy==1){
+                                            Toast.makeText(SearchBookActivity.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                        }
+                                        else {
+                                            Toast.makeText(SearchBookActivity.this,"Problem in deleting copy of "+book.get_bname()+" try again later",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    Intent intent=new Intent(SearchBookActivity.this,HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                            dialog.show();
                             break;
                     }
 

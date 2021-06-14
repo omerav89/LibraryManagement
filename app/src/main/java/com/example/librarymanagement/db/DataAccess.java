@@ -345,7 +345,7 @@ public class DataAccess {
 
         // do the update query
         return db.update(BooksSchema.TABLE_BOOK,values,BooksSchema.COLUMN_BOOK_BARCODE + " = ? ",
-                new String[] {barcode, Integer.toString(current_copy-1)});
+                new String[] {barcode});
     }
     /**********************************BOOK END****************************************************/
 
