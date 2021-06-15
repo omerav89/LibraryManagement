@@ -57,7 +57,8 @@ public class BooksSchema {
     /*
     create borrowing table
      */
-    protected final static String CREATE_TABLE_BORROWING="CREATE TABLE Borrowing (_id INTEGER ," +
+    protected final static String CREATE_TABLE_BORROWING="CREATE TABLE Borrowing (" +
+            " _id INTEGER," +
             " Books_id INT NOT NULL," +
             " Borrowers_id  INT NOT NULL," +
             " takeDate TEXT NOT NULL,"+

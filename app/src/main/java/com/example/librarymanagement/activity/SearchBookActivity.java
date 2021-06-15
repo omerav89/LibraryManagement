@@ -122,14 +122,17 @@ public class SearchBookActivity extends AppCompatActivity  {
         Book book;
         BorrowingBook[] books;
 
-        for (int i=0;i<unfilterd_books.size();i++){
-            book = unfilterd_books.get(i);
-            books = DataAccess.getInstance(SearchBookActivity.this).getBorrowingBookByBookId(book.get_id());
-            if(book.get_cnumber()>books.length){
-                bookList.add(book);
+        if(borrowingBookList.size()==0){
+            bookList=unfilterd_books;
+        }else {
+            for (int i=0;i<unfilterd_books.size();i++){
+                book = unfilterd_books.get(i);
+                books = DataAccess.getInstance(SearchBookActivity.this).getBorrowingBookByBookId(book.get_id());
+                if(book.get_cnumber()>books.length){
+                    bookList.add(book);
+                }
             }
         }
-
     }
 
     private void setUpRecyclerView() {

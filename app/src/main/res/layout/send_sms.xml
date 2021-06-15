@@ -50,40 +50,11 @@
         android:textStyle="bold"
         android:layout_marginTop="30dp"/>
 
-
-
-    <Button
-        android:layout_width="125dp"
-        android:layout_height="65dp"
-        android:layout_below="@+id/fnum"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="Edit Sms"
-        android:backgroundTint="#4AC4D8"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_alignParentRight="true"/>
-
-
-    <Button
-        android:layout_width="125dp"
-        android:layout_height="65dp"
-        android:layout_below="@+id/fnum"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="Sys Sms"
-        android:backgroundTint="#C5C5C5"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_alignParentLeft="true"/>
-
-
-
-    <TextView
-        android:layout_marginTop="150dp"
-        android:layout_below="@+id/fnum"
+    <EditText
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/phone_number"
         android:layout_width="wrap_content"
-        android:id="@+id/smstext"
+        android:id="@+id/smsText"
         android:layout_height="wrap_content"
         android:text=" "
         android:textSize="20dp"
@@ -95,10 +66,11 @@
     <Button
         android:layout_width="125dp"
         android:layout_height="65dp"
-        android:layout_below="@+id/fnum"
+        android:layout_below="@+id/smsText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="20dp"
         android:text="Send"
+        android:id="@+id/sendBtn"
         android:backgroundTint="#4AC4D8"
         android:textColor="@color/white"
         android:textStyle="bold"

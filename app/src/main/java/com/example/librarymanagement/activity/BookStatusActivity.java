@@ -35,7 +35,6 @@ public class BookStatusActivity extends AppCompatActivity {
     private Button dateButton,send_sms_btn;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

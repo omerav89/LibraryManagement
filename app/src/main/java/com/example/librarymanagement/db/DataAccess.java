@@ -513,8 +513,11 @@ public class DataAccess {
         return cursor;
     }
 
+
     public ArrayList<BorrowingBook> getAllBorrowingsList(){
+
         SQLiteDatabase db = helper.getReadableDatabase();
+
         Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
                 new String[]{BooksSchema.COLUMN_BORROWING_ID,
                         BooksSchema.COLUMN_BORROWING_BOOK_ID,
