@@ -248,7 +248,7 @@ public class SearchBookActivity extends AppCompatActivity  {
                         case "return":
                             try {
                                 Date return_date = new SimpleDateFormat("dd/MM/yyyy").parse(borrowingBookList.get(position).get_rdate());
-                                Date check_date = getCheckDate(return_date);
+                                Date check_date = getCheckDate(borrowingBookList.get(position).get_rdate().toString());
                                 Date tooday = new SimpleDateFormat("dd/MM/yyyy").parse(getTodaysDate());
 
                                 if(check_date.before(tooday)){
@@ -305,7 +305,6 @@ public class SearchBookActivity extends AppCompatActivity  {
         }
     }
 
-    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater =getMenuInflater();
@@ -336,11 +335,10 @@ public class SearchBookActivity extends AppCompatActivity  {
         alarmManager.cancel(your_pending_intent);
     }
 
-    private Date getCheckDate(Date date_check)
+    private Date getCheckDate(String date_check)
     {
         Calendar cal = Calendar.getInstance();
         String[] splitDate = date_check.toString().split("/");
-
         cal.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
         cal.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));

@@ -2,18 +2,14 @@ package com.example.librarymanagement.db;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
 
 import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.model.Borrower;
 import com.example.librarymanagement.model.BorrowingBook;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 
 public class DataAccess {
@@ -507,7 +503,7 @@ public class DataAccess {
     public Cursor getAllBorrowings(){
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
-                new String[]{BooksSchema.COLUM_BORROWING_ID,
+                new String[]{BooksSchema.COLUMN_BORROWING_ID,
                         BooksSchema.COLUMN_BORROWING_BOOK_ID,
                         BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
                         BooksSchema.COLUMN_BORROWING_TAKE_DATE,
@@ -520,7 +516,7 @@ public class DataAccess {
     public ArrayList<BorrowingBook> getAllBorrowingsList(){
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
-                new String[]{BooksSchema.COLUM_BORROWING_ID,
+                new String[]{BooksSchema.COLUMN_BORROWING_ID,
                         BooksSchema.COLUMN_BORROWING_BOOK_ID,
                         BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
                         BooksSchema.COLUMN_BORROWING_TAKE_DATE,
@@ -532,7 +528,7 @@ public class DataAccess {
         if(cursor.moveToFirst()){
             // see if there are results
            do{
-                long _id = cursor.getLong(cursor.getColumnIndex(BooksSchema.COLUM_BORROWING_ID));
+                long _id = cursor.getLong(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_ID));
                 int book_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BOOK_ID));
                 int borrowing_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BORROWERS_ID));
                 String take_date = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE));
@@ -564,7 +560,7 @@ public class DataAccess {
         // get the database results for the given book id
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
-                new String[] {BooksSchema.COLUM_BORROWING_ID,
+                new String[] {BooksSchema.COLUMN_BORROWING_ID,
                         BooksSchema.COLUMN_BORROWING_BOOK_ID,
                         BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
                         BooksSchema.COLUMN_BORROWING_TAKE_DATE,BooksSchema.COLUMN_BORROWING_RETURN_DATE},
@@ -608,7 +604,7 @@ public class DataAccess {
                 }
 
                 // make the reservation
-                BorrowingBook borrowingBooks = new BorrowingBook(  cursor.getLong(Integer.parseInt(BooksSchema.COLUM_BORROWING_ID)),
+                BorrowingBook borrowingBooks = new BorrowingBook(  cursor.getLong(Integer.parseInt(BooksSchema.COLUMN_BORROWING_ID)),
                         theBook, theBorrower,
                         cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE)),
                         cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE)));
