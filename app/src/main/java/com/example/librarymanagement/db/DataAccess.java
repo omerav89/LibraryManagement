@@ -408,7 +408,7 @@ public class DataAccess {
 
         // check if there are results
         if (cursor.moveToFirst()) {
-            Borrower s = new Borrower(
+            Borrower b = new Borrower(
                     cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_ID)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_FIRST_NAME)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWERR_LAST_NAME)),
@@ -416,7 +416,7 @@ public class DataAccess {
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER)));
 
             cursor.close();
-            return s;
+            return b;
         } else {
             cursor.close();
             return null;
@@ -431,7 +431,7 @@ public class DataAccess {
      */
     public Cursor getBorrowerByIDCursor(int bid) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
+        Cursor cursor = db.query(BooksSchema.TABLE_BORROWER,
                 new String[]{BooksSchema.COLUMN_BORROWER_ID,
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
@@ -445,6 +445,38 @@ public class DataAccess {
         return cursor;
     }
 
+    public Borrower getBorrowerByNamePhone(String fname,String lname, String phone){
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(BooksSchema.TABLE_BORROWER,
+                new String[]{BooksSchema.COLUMN_BORROWER_ID,
+                        BooksSchema.COLUMN_BORROWER_FIRST_NAME,
+                        BooksSchema.COLUMN_BORROWERR_LAST_NAME,
+                        BooksSchema.COLUMN_BORROWER_EMAIL,
+                        BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
+                },
+                BooksSchema.COLUMN_BORROWER_FIRST_NAME + " = ? AND "+
+                BooksSchema.COLUMN_BORROWERR_LAST_NAME + " = ? AND "+
+                BooksSchema.COLUMN_BORROWER_PHONE_NUMBER + " = ? ",
+                new String[]{fname,lname,phone},"" ,"","");
+
+        // check if there are results
+        if (cursor.moveToFirst()) {
+            Borrower b = new Borrower(
+                    cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_ID)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_FIRST_NAME)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWERR_LAST_NAME)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_EMAIL)),
+                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER)));
+
+            cursor.close();
+            return b;
+        } else {
+            cursor.close();
+            return null;
+        }
+
+    }
+
     /**********************************BORROWER END************************************************/
 
      /**********************************BORROWING**************************************************/
@@ -456,14 +488,14 @@ public class DataAccess {
      * @param rdate borrowing return date
      * @return The row id of the new borrowing, -1 if the insert failed
      */
-    public long add_borrowing(int bid, int brid, Date tdate, Date rdate){
+    public long add_borrowing(int bid, int brid, String tdate, String rdate){
         SQLiteDatabase db =helper.getWritableDatabase();
 
         ContentValues values=new ContentValues();
         values.put(BooksSchema.COLUMN_BORROWING_BOOK_ID,bid);
         values.put(BooksSchema.COLUMN_BORROWING_BORROWERS_ID,brid);
-        values.put(BooksSchema.COLUMN_BORROWING_TAKE_DATE,tdate.toString());
-        values.put(BooksSchema.COLUMN_BORROWING_RETURN_DATE,rdate.toString());
+        values.put(BooksSchema.COLUMN_BORROWING_TAKE_DATE,tdate);
+        values.put(BooksSchema.COLUMN_BORROWING_RETURN_DATE,rdate);
 
         return db.insert(BooksSchema.TABLE_BORROWING,"null",values);
     }
@@ -475,7 +507,8 @@ public class DataAccess {
     public Cursor getAllBorrowings(){
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
-                new String[]{BooksSchema.COLUMN_BORROWING_BOOK_ID,
+                new String[]{BooksSchema.COLUM_BORROWING_ID,
+                        BooksSchema.COLUMN_BORROWING_BOOK_ID,
                         BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
                         BooksSchema.COLUMN_BORROWING_TAKE_DATE,
                         BooksSchema.COLUMN_BORROWING_RETURN_DATE},
@@ -484,10 +517,11 @@ public class DataAccess {
         return cursor;
     }
 
-    public ArrayList<BorrowingBook> getAllBorrwingsList(){
+    public ArrayList<BorrowingBook> getAllBorrowingsList(){
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
-                new String[]{BooksSchema.COLUMN_BORROWING_BOOK_ID,
+                new String[]{BooksSchema.COLUM_BORROWING_ID,
+                        BooksSchema.COLUMN_BORROWING_BOOK_ID,
                         BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
                         BooksSchema.COLUMN_BORROWING_TAKE_DATE,
                         BooksSchema.COLUMN_BORROWING_RETURN_DATE},
@@ -498,7 +532,7 @@ public class DataAccess {
         if(cursor.moveToFirst()){
             // see if there are results
            do{
-
+                long _id = cursor.getLong(cursor.getColumnIndex(BooksSchema.COLUM_BORROWING_ID));
                 int book_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BOOK_ID));
                 int borrowing_id = cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_BORROWERS_ID));
                 String take_date = cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE));
@@ -507,7 +541,7 @@ public class DataAccess {
                 Book book=getBookById(book_id);
                 Borrower borrower=getBorrowersById(borrowing_id);
 
-                BorrowingBook borrowingBook=new BorrowingBook(book,borrower,take_date,return_date);
+                BorrowingBook borrowingBook=new BorrowingBook(_id,book,borrower,take_date,return_date);
                 borrowingBooksList.add(borrowingBook);
             } while (cursor.moveToNext());
 
@@ -529,8 +563,10 @@ public class DataAccess {
 
         // get the database results for the given book id
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(BooksSchema.TABLE_BOOK,
-                new String[] {BooksSchema.COLUMN_BORROWING_BOOK_ID, BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
+        Cursor cursor = db.query(BooksSchema.TABLE_BORROWING,
+                new String[] {BooksSchema.COLUM_BORROWING_ID,
+                        BooksSchema.COLUMN_BORROWING_BOOK_ID,
+                        BooksSchema.COLUMN_BORROWING_BORROWERS_ID,
                         BooksSchema.COLUMN_BORROWING_TAKE_DATE,BooksSchema.COLUMN_BORROWING_RETURN_DATE},
                 BooksSchema.COLUMN_BORROWING_BOOK_ID + "=?",
                 new String[] {Integer.toString(bid)}, "", "", "");
@@ -572,7 +608,8 @@ public class DataAccess {
                 }
 
                 // make the reservation
-                BorrowingBook borrowingBooks = new BorrowingBook(theBook, theBorrower,
+                BorrowingBook borrowingBooks = new BorrowingBook(  cursor.getLong(Integer.parseInt(BooksSchema.COLUM_BORROWING_ID)),
+                        theBook, theBorrower,
                         cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_TAKE_DATE)),
                         cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWING_RETURN_DATE)));
                 borrowingBook[i] = borrowingBooks;
@@ -594,12 +631,12 @@ public class DataAccess {
      * @param rdate The return Date
      * @return the number of rows deleted.  Will be 1 if the delete was successful and 0 if not.
      */
-    public int deleteBorrowingBookById (int bid, int brid, String tdate,String rdate){
+    public int deleteBorrowingBookByAllParameters (int bid, int brid, String tdate,String rdate){
         // do the deletion
         SQLiteDatabase db = helper.getWritableDatabase();
         // do the delete query
-        return db.delete(BooksSchema.TABLE_BORROWING, BooksSchema.COLUMN_BORROWING_BOOK_ID + " = ? "
-                        + BooksSchema.COLUMN_BORROWING_BORROWERS_ID + " = ? " + BooksSchema.COLUMN_BORROWING_TAKE_DATE + " = ?"+
+        return db.delete(BooksSchema.TABLE_BORROWING, BooksSchema.COLUMN_BORROWING_BOOK_ID + " = ? AND "
+                        + BooksSchema.COLUMN_BORROWING_BORROWERS_ID + " = ? AND " + BooksSchema.COLUMN_BORROWING_TAKE_DATE + " = ? AND "+
                         BooksSchema.COLUMN_BORROWING_RETURN_DATE + " = ? ",
                 new String[] {Integer.toString(bid), Integer.toString(brid), tdate,rdate});
 

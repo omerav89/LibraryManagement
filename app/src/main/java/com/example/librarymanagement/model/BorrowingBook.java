@@ -12,8 +12,10 @@ public class BorrowingBook implements Parcelable {
     private Book _book;
     private Borrower _borrower;
     private String _tdate,_rdate;
+    private long _id;
 
-    public BorrowingBook(Book _book, Borrower _borrower, String _tdate, String _rdate) {
+    public BorrowingBook(long _id,Book _book, Borrower _borrower, String _tdate, String _rdate) {
+        this._id=_id;
         this._book = _book;
         this._borrower = _borrower;
         this._tdate = _tdate;
@@ -21,6 +23,7 @@ public class BorrowingBook implements Parcelable {
     }
 
     protected BorrowingBook(Parcel in) {
+        _id = in.readLong();
         _book = in.readParcelable(Book.class.getClassLoader());
         _borrower = in.readParcelable(Borrower.class.getClassLoader());
         _tdate = in.readString();
@@ -38,6 +41,8 @@ public class BorrowingBook implements Parcelable {
             return new BorrowingBook[size];
         }
     };
+
+    public long get_id() { return _id; }
 
     public Book get_book() {
         return _book;
@@ -71,6 +76,7 @@ public class BorrowingBook implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(_id);
         dest.writeParcelable(_book, flags);
         dest.writeParcelable(_borrower, flags);
         dest.writeString(_tdate);

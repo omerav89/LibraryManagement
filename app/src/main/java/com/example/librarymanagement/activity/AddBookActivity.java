@@ -1,18 +1,31 @@
 package com.example.librarymanagement.activity;
 
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
+import com.example.librarymanagement.service.NotificationReceiver;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddBookActivity extends AppCompatActivity {
 
@@ -22,6 +35,8 @@ public class AddBookActivity extends AppCompatActivity {
     private Integer copy_number=1;
     private final static String SENDING_ACTIVITY="sending_activity";
     private Book incoming_book;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,4 +79,7 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 }

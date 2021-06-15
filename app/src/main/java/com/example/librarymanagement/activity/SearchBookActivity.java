@@ -1,5 +1,8 @@
 package com.example.librarymanagement.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,7 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.example.librarymanagement.model.BorrowingBook;
 import com.google.gson.Gson;
 
@@ -41,19 +50,23 @@ public class SearchBookActivity extends AppCompatActivity  {
     private EditText b_name;
     private ArrayList<Book>bookList= new ArrayList<>();
     private ArrayList<Book>bookListFull= new ArrayList<>();
+    private ArrayList<Book> unfilterd_books = new ArrayList<>();
     private ArrayList <BorrowingBook> borrowingBookList = new ArrayList<>();
     private ArrayList <BorrowingBook> borrowingBookFullList = new ArrayList<>();
     private Cursor cursor;
     private Gson gson = new Gson();
     private String book_obj_as_json="";
+    private int current_position=-1;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_search);
+
         btn_qr= findViewById(R.id.qrscan);
         b_name= findViewById(R.id.book_name);
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -74,21 +87,48 @@ public class SearchBookActivity extends AppCompatActivity  {
             }
         });
 
+        if(incoming_activity.matches("status")){
+            btn_qr.setVisibility(View.INVISIBLE);
+        }
+        else if(incoming_activity.matches("return")){
+            btn_qr.setVisibility(View.INVISIBLE);
+        }
+        else {
+            btn_qr.setVisibility(View.VISIBLE);
+        }
+
 
         switch (incoming_activity)
         {
             case "status":
-            case "return": borrowingBookList = DataAccess.getInstance(this).getAllBorrwingsList();
+            case "return": borrowingBookList = DataAccess.getInstance(this).getAllBorrowingsList();
                 bookList = DataAccess.getInstance(this).getBookList();
                 break;
+            case "borrow": unfilterd_books = DataAccess.getInstance(this).getBookList();
+                borrowingBookList = DataAccess.getInstance(this).getAllBorrowingsList();
+                setBookIlst(unfilterd_books);
+                break;
             case "edit":
-            case "borrow":
             case "remove":
                 bookList = DataAccess.getInstance(this).getBookList();
                 break;
         }
 
         setUpRecyclerView();
+
+    }
+
+    private void setBookIlst(ArrayList<Book> unfilterd_books) {
+        Book book;
+        BorrowingBook[] books;
+
+        for (int i=0;i<unfilterd_books.size();i++){
+            book = unfilterd_books.get(i);
+            books = DataAccess.getInstance(SearchBookActivity.this).getBorrowingBookByBookId(book.get_id());
+            if(book.get_cnumber()>books.length){
+                bookList.add(book);
+            }
+        }
 
     }
 
@@ -134,6 +174,7 @@ public class SearchBookActivity extends AppCompatActivity  {
                 @Override
                 public void OnItemClick(int position) {
 
+                    current_position=position;
                     Intent intent = null;
 
                     switch (incoming_activity){
@@ -204,7 +245,53 @@ public class SearchBookActivity extends AppCompatActivity  {
                     Intent intent = null;
 
                     switch (incoming_activity){
-                        case "return": ;
+                        case "return":
+                            try {
+                                Date return_date = new SimpleDateFormat("dd/MM/yyyy").parse(borrowingBookList.get(position).get_rdate());
+                                Date check_date = getCheckDate(return_date);
+                                Date tooday = new SimpleDateFormat("dd/MM/yyyy").parse(getTodaysDate());
+
+                                if(check_date.before(tooday)){
+                                    stopAlarm(SearchBookActivity.this);
+                                }
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
+                                dialog.setMessage("Do you wish to end this book borrow?");
+                                dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        int returned = DataAccess.getInstance(SearchBookActivity.this).
+                                                deleteBorrowingBookByAllParameters(borrowingBookList.get(position).get_book().get_id(),
+                                                        borrowingBookList.get(position).get_borrower().get_id(),
+                                                        borrowingBookList.get(position).get_tdate(),
+                                                        borrowingBookList.get(position).get_rdate());
+                                        if(returned==1){
+                                            Toast.makeText(SearchBookActivity.this,"The book: "+borrowingBookList.get(position).get_book().get_bname()+
+                                                            " returned by: "+borrowingBookList.get(position).get_borrower().get_fname()+" "+borrowingBookList.get(position).get_borrower().get_lname(),
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        else {
+                                            Toast.makeText(SearchBookActivity.this,"Problem in returning of the book: "+borrowingBookList.get(position).get_book().get_bname()+
+                                                            " returned by: "+borrowingBookList.get(position).get_borrower().get_fname()+" "+borrowingBookList.get(position).get_borrower().get_lname()+
+                                                            " try again later",
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        Intent intent1 = new Intent(SearchBookActivity.this,HomeActivity.class);
+                                        startActivity(intent1);
+                                    }
+                                });
+                                dialog.show();
+                            }catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+
                             break;
                         case "status":book_obj_as_json = gson.toJson(borrowingBookList.get(position));
                             intent=new Intent(SearchBookActivity.this,BookStatusActivity.class);
@@ -218,10 +305,7 @@ public class SearchBookActivity extends AppCompatActivity  {
         }
     }
 
-
-
-
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater =getMenuInflater();
@@ -243,5 +327,37 @@ public class SearchBookActivity extends AppCompatActivity  {
             }
         });
         return true;
+    }
+
+    public void stopAlarm(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent your_intent = new Intent();
+        PendingIntent your_pending_intent = PendingIntent.getBroadcast(context, (int) borrowingBookList.get(current_position).get_id(), your_intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(your_pending_intent);
+    }
+
+    private Date getCheckDate(Date date_check)
+    {
+        Calendar cal = Calendar.getInstance();
+        String[] splitDate = date_check.toString().split("/");
+
+        cal.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
+        cal.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+
+        Date date = cal.getTime();
+
+       return date;
+    }
+
+    private String getTodaysDate()
+    {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        month = month + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return day+"/"+month+"/"+year;
     }
 }

@@ -48,6 +48,7 @@ public class BooksSchema {
     /**********************************BORROWING**************************************************/
 
     public final static String TABLE_BORROWING="Borrowing";
+    public final static String COLUM_BORROWING_ID="_id";
     public final static String COLUMN_BORROWING_BOOK_ID="Books_id";
     public final static String COLUMN_BORROWING_BORROWERS_ID="Borrowers_id";
     public final static String COLUMN_BORROWING_TAKE_DATE="takeDate";
@@ -56,7 +57,7 @@ public class BooksSchema {
     /*
     create borrowing table
      */
-    protected final static String CREATE_TABLE_BORROWING="CREATE TABLE Borrowing (" +
+    protected final static String CREATE_TABLE_BORROWING="CREATE TABLE Borrowing (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " Books_id INT NOT NULL," +
             " Borrowers_id  INT NOT NULL," +
             " takeDate TEXT NOT NULL,"+
