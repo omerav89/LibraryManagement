@@ -96,7 +96,7 @@ public class SendSMS extends AppCompatActivity {
 
 private void Send(){
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(this.phone_number.getText().toString(), null, message, null, null);
+        smsManager.sendTextMessage(this.phone_number.getText().toString(), null, smsText.getText().toString(), null, null);
         Toast.makeText(getApplicationContext(), "SMS sent.",
                 Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SendSMS.this,HomeActivity.class);
