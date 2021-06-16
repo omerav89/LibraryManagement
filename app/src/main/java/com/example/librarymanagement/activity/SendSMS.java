@@ -89,10 +89,19 @@ public class SendSMS extends AppCompatActivity {
                         new String[]{Manifest.permission.SEND_SMS},
                         MY_PERMISSIONS_REQUEST_SEND_SMS);
             }
-        }
+        }  else Send();
+
+
     }
 
-
+private void Send(){
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(this.phone_number.getText().toString(), null, message, null, null);
+        Toast.makeText(getApplicationContext(), "SMS sent.",
+                Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(SendSMS.this,HomeActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
@@ -100,12 +109,7 @@ public class SendSMS extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(this.phone_number.getText().toString(), null, message, null, null);
-                    Toast.makeText(getApplicationContext(), "SMS sent.",
-                            Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SendSMS.this,HomeActivity.class);
-                    startActivity(intent);
+                   Send();
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "SMS faild, please try again.", Toast.LENGTH_LONG).show();

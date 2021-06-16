@@ -5,14 +5,13 @@ import android.os.Parcelable;
 
 public class Borrower implements Parcelable {
 
-    private String _fname, _lname, _email, _pnumber;
+    private String _fname, _lname,  _pnumber;
     private int _id;
 
-    public Borrower(int _id,String _fname, String _lname, String _email, String _pnumber) {
+    public Borrower(int _id,String _fname, String _lname, String _pnumber) {
         this._id=_id;
         this._fname = _fname;
         this._lname = _lname;
-        this._email = _email;
         this._pnumber = _pnumber;
 
     }
@@ -21,14 +20,14 @@ public class Borrower implements Parcelable {
         this._fname = _fname;
         this._lname = _lname;
         this._pnumber = _pnumber;
-        this._email ="";
+
 
     }
 
     protected Borrower(Parcel in) {
         _fname = in.readString();
         _lname = in.readString();
-        _email = in.readString();
+
         _pnumber = in.readString();
 
         _id = in.readInt();
@@ -56,9 +55,7 @@ public class Borrower implements Parcelable {
         return _lname;
     }
 
-    public String get_email() {
-        return _email;
-    }
+
 
     public String get_pnumber() {
         return _pnumber;
@@ -69,8 +66,7 @@ public class Borrower implements Parcelable {
     @Override
     public String toString()
     {
-        return "ID = " + get_id() + "; Name = " + get_fname() + " " + get_lname() +
-                "; Email = " + get_email()+"; Phone Number = " + get_pnumber();
+        return "ID = " + get_id() + "; Name = " + get_fname() + " " + get_lname() + "; Phone Number = " + get_pnumber();
     }
 
     @Override
@@ -80,7 +76,7 @@ public class Borrower implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_fname);
         dest.writeString(_lname);
-        dest.writeString(_email);
+
         dest.writeString(_pnumber);
 
         dest.writeInt(_id);

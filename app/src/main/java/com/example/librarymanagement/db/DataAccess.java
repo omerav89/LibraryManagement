@@ -351,17 +351,16 @@ public class DataAccess {
      *Adds a borrower to the database
      * @param first_name borrower first name
      * @param last_name borrower last name
-     * @param email borrower email
+     *
      * @param phone_number borrower phone number
      * @return The row id of the new borrower, -1 if the insert failed
      */
-    public long add_borrower(String first_name, String last_name, String email, String phone_number){
+    public long add_borrower(String first_name, String last_name, String phone_number){
         SQLiteDatabase db =helper.getWritableDatabase();
 
         ContentValues values=new ContentValues();
         values.put(BooksSchema.COLUMN_BORROWER_FIRST_NAME,first_name);
         values.put(BooksSchema.COLUMN_BORROWERR_LAST_NAME,last_name);
-        values.put(BooksSchema.COLUMN_BORROWER_EMAIL,email);
         values.put(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER,phone_number);
 
         return db.insert(BooksSchema.TABLE_BORROWER,"null",values);
@@ -377,7 +376,7 @@ public class DataAccess {
                 new String[]{BooksSchema.COLUMN_BORROWER_ID,
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
-                        BooksSchema.COLUMN_BORROWER_EMAIL,
+
                         BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
                         },
                 "",null, "", "", "");
@@ -396,7 +395,7 @@ public class DataAccess {
                 new String[]{BooksSchema.COLUMN_BORROWER_ID,
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
-                        BooksSchema.COLUMN_BORROWER_EMAIL,
+
                         BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
                         },
                 BooksSchema.COLUMN_BORROWER_ID + "=?",
@@ -408,7 +407,7 @@ public class DataAccess {
                     cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_ID)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_FIRST_NAME)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWERR_LAST_NAME)),
-                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_EMAIL)),
+
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER)));
 
             cursor.close();
@@ -431,7 +430,7 @@ public class DataAccess {
                 new String[]{BooksSchema.COLUMN_BORROWER_ID,
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
-                        BooksSchema.COLUMN_BORROWER_EMAIL,
+
                         BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
                         },
                 BooksSchema.COLUMN_BORROWER_ID + "=?",
@@ -447,7 +446,7 @@ public class DataAccess {
                 new String[]{BooksSchema.COLUMN_BORROWER_ID,
                         BooksSchema.COLUMN_BORROWER_FIRST_NAME,
                         BooksSchema.COLUMN_BORROWERR_LAST_NAME,
-                        BooksSchema.COLUMN_BORROWER_EMAIL,
+
                         BooksSchema.COLUMN_BORROWER_PHONE_NUMBER
                 },
                 BooksSchema.COLUMN_BORROWER_FIRST_NAME + " = ? AND "+
@@ -461,7 +460,7 @@ public class DataAccess {
                     cursor.getInt(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_ID)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_FIRST_NAME)),
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWERR_LAST_NAME)),
-                    cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_EMAIL)),
+
                     cursor.getString(cursor.getColumnIndex(BooksSchema.COLUMN_BORROWER_PHONE_NUMBER)));
 
             cursor.close();

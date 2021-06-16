@@ -127,7 +127,6 @@ public class ReportActivity extends AppCompatActivity {
         File outputFile = new File(Environment.getExternalStoragePublicDirectory
                 (Environment.DIRECTORY_DOWNLOADS), "example.pdf");
         Uri uri = Uri.fromFile(outputFile);
-
         Intent share = new Intent();
         share.setAction(Intent.ACTION_SEND);
         share.setType("application/pdf");

@@ -34,7 +34,7 @@ import java.util.Locale;
 
 public class BorrowBookActivity extends AppCompatActivity {
 
-    private EditText f_name,l_name,p_number,mail_address;
+    private EditText f_name,l_name,p_number;
     private Book book=null;
     private TextView book_title, take_date;
     private Button btn_borrow;
@@ -59,7 +59,7 @@ public class BorrowBookActivity extends AppCompatActivity {
         f_name = findViewById(R.id.fname);
         l_name = findViewById(R.id.lname);
         p_number = findViewById(R.id.phonenum);
-        mail_address = findViewById(R.id.mail_address);
+
         book_title = findViewById(R.id.book_title);
         btn_borrow = findViewById(R.id.btn_borrow);
         btn_borrow = findViewById(R.id.btn_borrow);
@@ -121,7 +121,6 @@ public class BorrowBookActivity extends AppCompatActivity {
                             if (if_exists == null) {
                                 ok_adding_borrower = DataAccess.getInstance(BorrowBookActivity.this).add_borrower(f_name.getText().toString(),
                                         l_name.getText().toString(),
-                                        mail_address.getText().toString(),
                                         p_number.getText().toString());
                             }
                             ok_adding_borrowing = DataAccess.getInstance(BorrowBookActivity.this).add_borrowing(book.get_id(),
