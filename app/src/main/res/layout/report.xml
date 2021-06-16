@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
@@ -54,4 +54,5 @@
 
         </TableLayout>
     </ScrollView>
-</LinearLayout>
+   </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
