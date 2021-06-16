@@ -8,6 +8,7 @@
     android:layout_height="wrap_content"
     tools:context=".activity.HomeActivity"
     android:layout_marginLeft="30dp"
+    android:layoutDirection="ltr"
     android:layout_marginRight="30dp"
     android:orientation="vertical"
     android:fitsSystemWindows="true">

@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="40dp"
     android:layout_marginRight="40dp"
+    android:layoutDirection="ltr"
     tools:context="com.example.librarymanagement.activity.SearchBookActivity">
 
     <LinearLayout
