@@ -1,8 +1,12 @@
 package com.example.librarymanagement.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.media.Image;
 import android.net.Uri;
@@ -18,24 +22,38 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.model.BorrowingBook;
 import com.google.zxing.pdf417.PDF417Writer;
-
-import org.w3c.dom.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class ReportActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
     private TableLayout mTableLayout;
     private ProgressDialog mProgressBar;
     private ArrayList<Book> books = new ArrayList<>();
@@ -43,6 +61,7 @@ public class ReportActivity extends AppCompatActivity {
     private int mTexrColorRed,firstBackgroung,secondBackgroung;
     private int mTextViewBorderWidth, mTableBorderWidth;
     private ImageButton share,download;
+    private final String BOOK_FILE="bookList.pdf";
 
 
     @Override
@@ -65,6 +84,19 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        download.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                if(!checkPermission()){
+                    requestPermission();
+                }
+                else {
+                    createPdf();
+                }
             }
         });
     }
@@ -97,12 +129,9 @@ public class ReportActivity extends AppCompatActivity {
 
             if(this.borrowingBooks!=null){
                 int counter = 0;
-                for(int i=0;i<borrowingBooks.size();i++){
-                    if(borrowingBooks.get(i).get_book().get_bname().matches(books.get(currentRow).get_bname())){
-                        counter++;
-                    }
-                }
-                if (counter == books.get(currentRow).get_cnumber()){
+                BorrowingBook[] borrowingBooksSearch = DataAccess.getInstance(this).getBorrowingBookByBookId(books.get(currentRow).get_id());
+
+                if (borrowingBooksSearch != null && borrowingBooksSearch.length == books.get(currentRow).get_cnumber()){
                     textViewBookAuthor.setTextColor(mTexrColorRed);
                     textViewBookCopy.setTextColor(mTexrColorRed);
                     textViewBookName.setTextColor(mTexrColorRed);
@@ -136,9 +165,99 @@ public class ReportActivity extends AppCompatActivity {
         startActivity(share);
     }
 
-    public void createPdf(){
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void createPdf() {
+        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+        try {
+           File file = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),BOOK_FILE);
+            PdfWriter.getInstance(document, new FileOutputStream(file));
+            document.addCreationDate();
+            document.open();
+            document.newPage();
+            document.addTitle("Book list of all my books");
+            if(document.isOpen()) {
+                PdfPTable table = new PdfPTable(3);
 
+                PdfPCell col1 = new PdfPCell(new Phrase("Book Name"));
+                PdfPCell col2 = new PdfPCell(new Phrase("Author"));
+                PdfPCell col3 = new PdfPCell(new Phrase("Total numbers of copy's"));
+                PdfPCell col4 = new PdfPCell(new Phrase("Numbers of copy's in use"));
+
+                table.addCell(col1);
+                table.addCell(col2);
+                table.addCell(col3);
+                table.addCell(col4);
+
+                for (int index = 0; index < books.size(); index++) {
+
+                    col1 = new PdfPCell(new Phrase(books.get(index).get_bname()));
+                    table.addCell(col1);
+
+                    col2 = new PdfPCell(new Phrase(books.get(index).get_author()));
+                    table.addCell(col2);
+
+                    col3 = new PdfPCell(new Phrase(books.get(index).get_cnumber()));
+                    table.addCell(col3);
+
+                    BorrowingBook[] list = DataAccess.getInstance(this).getBorrowingBookByBookId(books.get(index).get_id());
+
+                    if (list != null) {
+                        col4 = new PdfPCell(new Phrase(list.length));
+                        table.addCell(col4);
+                    } else {
+                        col4 = new PdfPCell(new Phrase("0"));
+                        table.addCell(col4);
+                    }
+
+                    document.add(table);
+                }
+
+            }
+            else {
+                Toast.makeText(this, "Problem in open file, try again later", Toast.LENGTH_SHORT).show();
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this,"file not found",Toast.LENGTH_SHORT).show();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this,"Download completed",Toast.LENGTH_LONG);
+        document.close();
+    }
+
+    private boolean checkPermission() {
+        // checking of permissions.
+        int permission1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        // requesting permissions if not provided.
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0) {
+                // after requesting permissions we are showing
+                // users a toast message of permission granted.
+                boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+
+                if (writeStorage && readStorage) {
+                    Toast.makeText(this, "Permission Granted..", Toast.LENGTH_SHORT).show();
+                    createPdf();
+                } else {
+                    Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        }
+    }
 }
+
+
