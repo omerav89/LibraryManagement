@@ -93,6 +93,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!checkPermission()){
                     requestPermission();
+                    Toast.makeText(ReportActivity.this,"hereeee",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     createPdf();
@@ -165,16 +166,18 @@ public class ReportActivity extends AppCompatActivity {
         startActivity(share);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public void createPdf() {
+
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+
         try {
-           File file = new File(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),BOOK_FILE);
-            PdfWriter.getInstance(document, new FileOutputStream(file));
-            document.addCreationDate();
+            PdfWriter.getInstance(document,new FileOutputStream(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)+"/"+BOOK_FILE,false));
+
             document.open();
-            document.newPage();
+
             document.addTitle("Book list of all my books");
+
             if(document.isOpen()) {
                 PdfPTable table = new PdfPTable(3);
 
@@ -208,10 +211,8 @@ public class ReportActivity extends AppCompatActivity {
                         col4 = new PdfPCell(new Phrase("0"));
                         table.addCell(col4);
                     }
-
-                    document.add(table);
                 }
-
+                document.add(table);
             }
             else {
                 Toast.makeText(this, "Problem in open file, try again later", Toast.LENGTH_SHORT).show();
@@ -220,9 +221,10 @@ public class ReportActivity extends AppCompatActivity {
             Toast.makeText(this,"file not found",Toast.LENGTH_SHORT).show();
         } catch (DocumentException e) {
             e.printStackTrace();
+        }finally {
+            document.close();
         }
-        Toast.makeText(this,"Download completed",Toast.LENGTH_LONG);
-        document.close();
+
     }
 
     private boolean checkPermission() {
@@ -238,7 +240,6 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
