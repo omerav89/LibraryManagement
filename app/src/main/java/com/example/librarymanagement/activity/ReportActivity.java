@@ -37,6 +37,7 @@ import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.model.BorrowingBook;
 import com.google.zxing.pdf417.PDF417Writer;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -93,7 +94,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!checkPermission()){
                     requestPermission();
-                    Toast.makeText(ReportActivity.this,"hereeee",Toast.LENGTH_SHORT).show();
+
                 }
                 else {
                     createPdf();
@@ -153,43 +154,44 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
-    public void shareToWhatsapp(){
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory
-                (Environment.DIRECTORY_DOWNLOADS), "example.pdf");
-        Uri uri = Uri.fromFile(outputFile);
-        Intent share = new Intent();
-        share.setAction(Intent.ACTION_SEND);
-        share.setType("application/pdf");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.setPackage("com.whatsapp");
+//    public void shareToWhatsapp(){
+//        File outputFile = new File(Environment.DIRECTORY_DOWNLOADS), "example.pdf");
+//        Uri uri = Uri.fromFile(outputFile);
+//        Intent share = new Intent();
+//        share.setAction(Intent.ACTION_SEND);
+//        share.setType("application/pdf");
+//        share.putExtra(Intent.EXTRA_STREAM, uri);
+//        share.setPackage("com.whatsapp");
+//
+//        startActivity(share);
+//    }
 
-        startActivity(share);
-    }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createPdf() {
 
-        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-
+        Document document = new Document(PageSize.A4, 10, 10, 10, 10);
+        File file=new File(this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString()+"/"+BOOK_FILE);
         try {
-            PdfWriter.getInstance(document,new FileOutputStream(this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)+"/"+BOOK_FILE,false));
+            PdfWriter.getInstance(document,new FileOutputStream(file));
 
             document.open();
 
             document.addTitle("Book list of all my books");
 
+
             if(document.isOpen()) {
-                PdfPTable table = new PdfPTable(3);
+                PdfPTable table = new PdfPTable(4);
 
                 PdfPCell col1 = new PdfPCell(new Phrase("Book Name"));
-                PdfPCell col2 = new PdfPCell(new Phrase("Author"));
-                PdfPCell col3 = new PdfPCell(new Phrase("Total numbers of copy's"));
-                PdfPCell col4 = new PdfPCell(new Phrase("Numbers of copy's in use"));
-
                 table.addCell(col1);
+                PdfPCell col2 = new PdfPCell(new Phrase("Author"));
                 table.addCell(col2);
+                PdfPCell col3 = new PdfPCell(new Phrase("Total #copy's"));
                 table.addCell(col3);
+                PdfPCell col4 = new PdfPCell(new Phrase(" #copy's in use"));
                 table.addCell(col4);
+
 
                 for (int index = 0; index < books.size(); index++) {
 
@@ -199,13 +201,13 @@ public class ReportActivity extends AppCompatActivity {
                     col2 = new PdfPCell(new Phrase(books.get(index).get_author()));
                     table.addCell(col2);
 
-                    col3 = new PdfPCell(new Phrase(books.get(index).get_cnumber()));
+                    col3 = new PdfPCell(new Phrase(String.valueOf(books.get(index).get_cnumber())));
                     table.addCell(col3);
 
                     BorrowingBook[] list = DataAccess.getInstance(this).getBorrowingBookByBookId(books.get(index).get_id());
 
                     if (list != null) {
-                        col4 = new PdfPCell(new Phrase(list.length));
+                        col4 = new PdfPCell(new Phrase(String.valueOf(list.length)));
                         table.addCell(col4);
                     } else {
                         col4 = new PdfPCell(new Phrase("0"));
@@ -213,6 +215,7 @@ public class ReportActivity extends AppCompatActivity {
                     }
                 }
                 document.add(table);
+
             }
             else {
                 Toast.makeText(this, "Problem in open file, try again later", Toast.LENGTH_SHORT).show();
@@ -223,6 +226,7 @@ public class ReportActivity extends AppCompatActivity {
             e.printStackTrace();
         }finally {
             document.close();
+            Toast.makeText(this, "Download completed, file in Documents folder", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -240,6 +244,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
