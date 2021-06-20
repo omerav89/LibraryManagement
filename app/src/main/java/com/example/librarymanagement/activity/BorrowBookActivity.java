@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -23,6 +24,7 @@ import com.example.librarymanagement.R;
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.model.Borrower;
+import com.example.librarymanagement.model.BorrowingBook;
 import com.example.librarymanagement.service.NotificationReceiver;
 import com.google.gson.Gson;
 
@@ -41,6 +43,7 @@ public class BorrowBookActivity extends AppCompatActivity {
     private final static String SENDING_RESULT="sending_result";
     private Gson gson= new Gson();
     private String book_data;
+    private String return_book_str="";
     private DatePickerDialog datePickerDialog;
     private Button return_date_button;
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
@@ -63,6 +66,8 @@ public class BorrowBookActivity extends AppCompatActivity {
         book_title = findViewById(R.id.book_title);
         btn_borrow = findViewById(R.id.btn_borrow);
         btn_borrow = findViewById(R.id.btn_borrow);
+
+        return_book_str=return_date_button.getText().toString();
 
         take_date.setText(getTodaysDate());
 
@@ -88,6 +93,7 @@ public class BorrowBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openDatePicker(v);
+
             }
         });
 
@@ -98,56 +104,44 @@ public class BorrowBookActivity extends AppCompatActivity {
 
                 if (f_name.getText().toString().matches("") ||
                         l_name.getText().toString().matches("") ||
-                        p_number.getText().toString().matches("")) {
+                        p_number.getText().toString().matches("")||
+                        !return_date_button.getText().toString().matches("Return Date")) {
 
-                    Toast.makeText(BorrowBookActivity.this, "Make sure to fill first name, last name and phone number", Toast.LENGTH_SHORT).show();
-                } else if (p_number.getText().toString().length() < 10) {
+                    Toast.makeText(BorrowBookActivity.this, "Make sure to fill first name, last name , phone number and return date", Toast.LENGTH_SHORT).show();
+                }
+                else if (p_number.getText().toString().length() < 10) {
                     Toast.makeText(BorrowBookActivity.this, "please enter vaild phone number", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        Date takeDate = new SimpleDateFormat("dd/MM/yyyy").parse(take_date.getText().toString());
-                        Date returnDate = new SimpleDateFormat("dd/MM/yyyy").parse(return_date_button.getText().toString());
-
-                        if (takeDate.after(returnDate)) {
-                            Toast.makeText(BorrowBookActivity.this, "take date must be after return date!!", Toast.LENGTH_SHORT).show();
-                        } else if (takeDate.compareTo(returnDate) == 0) {
-                            Toast.makeText(BorrowBookActivity.this, "take date must be after return date!!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Borrower if_exists = DataAccess.getInstance(BorrowBookActivity.this).getBorrowerByNamePhone(
-                                    f_name.getText().toString(),
-                                    l_name.getText().toString(),
-                                    p_number.getText().toString()
-                            );
-                            if (if_exists == null) {
-                                ok_adding_borrower = DataAccess.getInstance(BorrowBookActivity.this).add_borrower(f_name.getText().toString(),
-                                        l_name.getText().toString(),
-                                        p_number.getText().toString());
-                            }
-                            ok_adding_borrowing = DataAccess.getInstance(BorrowBookActivity.this).add_borrowing(book.get_id(),
-                                    (int) ok_adding_borrower, take_date.getText().toString(), return_date_button.getText().toString());
-
-                            if (ok_adding_borrowing > 0) {
-
-                                setDate(v);
-
-                                Toast.makeText(BorrowBookActivity.this, "The book " + book.get_bname() +
-                                                " was booked to " + f_name.getText().toString() + " " +
-                                                l_name.getText().toString() + " until " +
-                                                return_date_button.getText().toString()
-                                        , Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(BorrowBookActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(BorrowBookActivity.this, "problem in DB try again later", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(BorrowBookActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                }
+                else {
+                    Borrower if_exists = DataAccess.getInstance(BorrowBookActivity.this).getBorrowerByNamePhone(
+                            f_name.getText().toString(),
+                            l_name.getText().toString(),
+                            p_number.getText().toString()
+                    );
+                    if (if_exists == null) {
+                        ok_adding_borrower = DataAccess.getInstance(BorrowBookActivity.this).add_borrower(f_name.getText().toString(),
+                                l_name.getText().toString(),
+                                p_number.getText().toString());
                     }
+                    ok_adding_borrowing = DataAccess.getInstance(BorrowBookActivity.this).add_borrowing(book.get_id(),
+                            (int) ok_adding_borrower, take_date.getText().toString(), return_date_button.getText().toString());
 
+                    if (ok_adding_borrowing > 0) {
+
+                        setDate(v);
+                        Toast.makeText(BorrowBookActivity.this, "The book " + book.get_bname() +
+                                        " was booked to " + f_name.getText().toString() + " " +
+                                        l_name.getText().toString() + " until " +
+                                        return_date_button.getText().toString()
+                                , Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(BorrowBookActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(BorrowBookActivity.this, "problem in DB try again later", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(BorrowBookActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -172,7 +166,21 @@ public class BorrowBookActivity extends AppCompatActivity {
             {
                 month = month + 1;
                 String date = day+"/"+month+"/"+year;
-                  return_date_button.setText(date);
+                try {
+                    Date takeDate = new SimpleDateFormat("dd/MM/yyyy").parse(take_date.getText().toString());
+                    Date returnDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+                    if (takeDate.after(returnDate)) {
+                        Toast.makeText(BorrowBookActivity.this, "take date must be after return date!!", Toast.LENGTH_SHORT).show();
+                        return_date_button.setText(return_book_str);
+                    } else if (takeDate.compareTo(returnDate) == 0) {
+                        Toast.makeText(BorrowBookActivity.this, "take date must be after return date!!", Toast.LENGTH_SHORT).show();
+                        return_date_button.setText(return_book_str);
+                    } else {
+                        return_date_button.setText(date);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         };
 
@@ -204,9 +212,10 @@ public class BorrowBookActivity extends AppCompatActivity {
 
     private Notification getNotification (String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
-        builder.setContentTitle( "Scheduled Notification" ) ;
-        builder.setContentText(content) ;
-        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
+        builder.setContentTitle( "Book Deadline Notification" ) ;
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(content));
+        builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        builder.setSmallIcon(R.drawable.notification_book ) ;
         builder.setAutoCancel( true ) ;
         builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
         return builder.build() ;
@@ -221,9 +230,9 @@ public class BorrowBookActivity extends AppCompatActivity {
 
         Date date = myCalendar .getTime() ;
         scheduleNotification(getNotification(
-                f_name+" "+l_name+
+                   f_name.getText().toString()+" "+l_name.getText().toString()+
                         " need to return the book: "+
-                        book_title+" tomorrow: "+ return_date_button.getText().toString()
+                        book_title.getText().toString()+" tomorrow: "+ return_date_button.getText().toString()
         ), date.getTime()) ;
 
     }
