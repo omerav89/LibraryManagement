@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">LibraryManagement</string>
+    <string name="app_name">My library</string>
+    <string name="add_book">Add Book</string>
+    <string name="edit_book">Edit Book</string>
+    <string name="borrowing">Borrowing</string>
+    <string name="return_book">Return Book</string>
+    <string name="report">Report</string>
+    <string name="status">Book status</string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+    <string name=""></string>
+
+
 </resources>

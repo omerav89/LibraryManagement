@@ -198,7 +198,7 @@ public class BorrowBookActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, (int) ok_adding_borrowing, notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
         assert alarmManager != null;
-        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , delay , pendingIntent) ;
+        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , 10000 , pendingIntent) ;
     }
 
 
