@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"הספריה שלי "</string>
+    <string name="add_book">הוספת ספר</string>
+    <string name="edit_book">"עריכת ספר "</string>
+    <string name="borrowing">השאלה</string>
+    <string name="return_book">"החזרת ספר "</string>
+    <string name="report">דוח</string>
+    <string name="remove_book">מחיקת ספר</string>
+    <string name="welcome">ברוכים הבאים</string>
+    <string name="book_name">"שם הספר "</string>
+    <string name="book_author">שם הסופר</string>
+    <string name="summery">תקציר</string>
+    <string name="add_btn">הוספה</string>
+    <string name="qr_s">סריקת ברקוד</string>
+    <string name="f_name">"שם מלא "</string>
+    <string name="return_d">"תאריך החזרה "</string>
+    <string name="borrowing_form">"טופס השאלה "</string>
+    <string name="l_name">שם משפחה</string>
+    <string name="f_number">מספר פלאפון</string>
+    <string name="borrow_d">תאריך השאלה</string>
+    <string name="done">סיום</string>
+    <string name="cancel">ביטול</string>
+    <string name="save">שמור</string>
+    <string name="author">סופר</string>
+    <string name="copy">עותקים</string>
+    <string name="send">שלח</string>
+    <string name="send_sms">שלח הודעת טקסט</string>
+    <string name="change_d">"שינוי תאריך "</string>
+    <string name="status_title">דוח מעקב</string>
+    <string name="status">מעקב השאלה</string>
+</resources>
