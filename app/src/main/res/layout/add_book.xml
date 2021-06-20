@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Book"
+        android:text="@string/add_book"
         android:textSize="25dp"
         android:textStyle="bold"
         android:layout_below="@id/add"
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/add"
-        android:hint="Book Name"
+        android:hint="@string/book_name"
         android:textStyle="bold"
         android:layout_marginTop="60dp"/>
 
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/book_name"
-        android:hint="Book Author"
+        android:hint="@string/book_author"
         android:textStyle="bold"
         android:layout_marginTop="40dp"/>
 
@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/author"
-        android:hint="Summery"
+        android:hint="@string/summery"
         android:textStyle="bold"
         android:layout_marginTop="40dp"/>
 
@@ -67,7 +67,7 @@
         android:layout_below="@+id/summery"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:text="Add"
+        android:text="@string/add_btn"
         android:id="@+id/add_btn"
         android:backgroundTint="#4AC4D8"
         android:textColor="@color/white"

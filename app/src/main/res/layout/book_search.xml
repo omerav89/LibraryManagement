@@ -38,7 +38,7 @@
             android:layout_below="@+id/recycler_view"
            android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="QR Scan"
+            android:text="@string/qr_s"
             android:backgroundTint="#4AC4D8"
             android:textColor="@color/white"
             android:textStyle="bold"

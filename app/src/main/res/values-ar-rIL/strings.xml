@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مكتبتي</string>
+    <string name="add_book">" أضف كتابًا"</string>
+    <string name="edit_book">"تعديل كتاب "</string>
+    <string name="borrowing">"اقتراض "</string>
+    <string name="return_book">"ارجاع كتاب "</string>
+    <string name="report">"تقرير "</string>
+    <string name="status">"تتبع عملية الاقتراض "</string>
+    <string name="remove_book">"حذف كتابًا "</string>
+    <string name="welcome">"أهلًا وسهلًا "</string>
+    <string name="book_name">"اسم الكتاب "</string>
+    <string name="book_author">"اسم المؤلف "</string>
+    <string name="summery">"ملخّص "</string>
+    <string name="add_btn">"أضفْ "</string>
+    <string name="qr_s">"مسح رمز الاستجابة السريعة "</string>
+    <string name="status_title">تتبع عملية الاقتراض</string>
+    <string name="f_name">"الاسم الكامل "</string>
+    <string name="return_d">"تاريخ الارجاع "</string>
+    <string name="send_sms">"أرسلْ رسالة قصيرة "</string>
+    <string name="change_d">"تغيير التاريخ "</string>
+    <string name="borrowing_form">"نموذج لتعبئة عملية الاقتراض "</string>
+    <string name="l_name">"اسم العائلة "</string>
+    <string name="f_number">"رقم الهاتف "</string>
+    <string name="borrow_d">"تاريخ الاقتراض "</string>
+    <string name="done">"انهاء "</string>
+    <string name="cancel">"الغاء "</string>
+    <string name="save">"حفظ "</string>
+    <string name="author">"مؤلف "</string>
+    <string name="copy">"عدد النسخ "</string>
+    <string name="send">"ارسال "</string>
+</resources>

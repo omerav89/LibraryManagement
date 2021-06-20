@@ -6,14 +6,28 @@
     <string name="return_book">Return Book</string>
     <string name="report">Report</string>
     <string name="status">Book status</string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
-    <string name=""></string>
+    <string name="remove_book">Remove Book</string>
+    <string name="welcome">Welcome</string>
+    <string name="book_name">Book Name</string>
+    <string name="book_author">Book Author</string>
+    <string name="summery">Summery</string>
+    <string name="add_btn">Add</string>
+    <string name="qr_s">QR Scan</string>
+    <string name="status_title">Status</string>
+    <string name="f_name">Full Name</string>
+    <string name="return_d">Return Date</string>
+    <string name="send_sms">Send Sms</string>
+    <string name="change_d">Change Date</string>
+    <string name="borrowing_form">Borrowing Form</string>
+    <string name="l_name">Last Name</string>
+    <string name="f_number">Phone Number</string>
+    <string name="borrow_d">Borrow Date</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="author">Author</string>
+    <string name="copy">copy #</string>
+    <string name="send">Send</string>
 
 
 </resources>

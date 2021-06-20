@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Status"
+        android:text="@string/status_title"
         android:textSize="25dp"
         android:textStyle="bold"
         android:layout_below="@id/afterstatus"
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/afterstatus"
-        android:text="Full Name"
+        android:text="@string/f_name"
         android:textStyle="bold"
         android:textSize="20dp"
         android:layout_marginTop="100dp"/>
@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/book_name"
-        android:text="Book Name"
+        android:text="@string/book_name"
         android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
 
     <TextView
         android:id="@+id/returndate"
-        android:text="Return Date"
+        android:text="@string/return_d"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/book_name"
@@ -72,7 +72,7 @@
         android:layout_below="@+id/returndate"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
-        android:text="Send Sms"
+        android:text="@string/send_sms"
         android:backgroundTint="#4AC4D8"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -86,7 +86,7 @@
         android:layout_below="@+id/returndate"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
-        android:text="Change Date"
+        android:text="@string/change_d"
         android:backgroundTint="#4AC4D8"
         android:textColor="@color/white"
         android:textStyle="bold"
