@@ -554,8 +554,7 @@ public class DataAccess {
      * Gets the BorrowingBook for a given book by its ID.
      * @param bid The book ID to look for
      * @return The BorrowingBook for the book in an array.  If there are not BorrowingBook for the book,
-     * an empty array will be returned.  If the BorrowingBook is for a non-existent borrower, the BorrowingBook
-     * is skipped.
+     * an empty array will be returned.
      */
     public BorrowingBook[] getBorrowingBookByBookId (int bid) {
 

@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.example.librarymanagement.model.BorrowingBook;
+import com.example.librarymanagement.service.NotificationReceiver;
 import com.google.gson.Gson;
 
 
@@ -86,6 +87,7 @@ public class SearchBookActivity extends AppCompatActivity  {
                 startActivity(qrscan);
             }
         });
+
 
         if(incoming_activity.matches("status")){
             btn_qr.setVisibility(View.INVISIBLE);
@@ -194,40 +196,55 @@ public class SearchBookActivity extends AppCompatActivity  {
                             startActivity(intent);
                             break;
                         case "remove":Book book = DataAccess.getInstance(SearchBookActivity.this).getBookById(bookList.get(position).get_id());
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
-                            dialog.setMessage("Are you sure you want to delete the book: "+book.get_bname()+"?");
-                            dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                            BorrowingBook []borrowingBook = DataAccess.getInstance(SearchBookActivity.this).getBorrowingBookByBookId(book.get_id());
+                            boolean ok=false;
+                            if(borrowingBook.length!=0){
+                                if(borrowingBook.length==book.get_cnumber()){
+                                    Toast.makeText(SearchBookActivity.this,"Can`t delete book, all copy`s are in borrowed status",Toast.LENGTH_LONG).show();
                                 }
-                            });
-                            dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(book.get_cnumber()==1){
-                                        int delete=DataAccess.getInstance(SearchBookActivity.this).deleteBookById(book.get_id());
-                                        if(delete==1){
-                                            Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                else {
+                                    ok=true;
+                                }
+                            }
+                            else {
+                                ok=true;
+                            }
+                            if(ok){
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
+                                dialog.setMessage("Are you sure you want to delete the book: "+book.get_bname()+"?");
+                                dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if(book.get_cnumber()==1){
+                                            int delete=DataAccess.getInstance(SearchBookActivity.this).deleteBookById(book.get_id());
+                                            if(delete==1){
+                                                Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was not deleted from database, try again later",Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                         else {
-                                            Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was not deleted from database, try again later",Toast.LENGTH_SHORT).show();
+                                            int delete_copy = DataAccess.getInstance(SearchBookActivity.this).decreaseOneFromCopyByBarcode(book.get_barcode(),book.get_cnumber());
+                                            if(delete_copy==1){
+                                                Toast.makeText(SearchBookActivity.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(SearchBookActivity.this,"Problem in deleting copy of "+book.get_bname()+" try again later",Toast.LENGTH_SHORT).show();
+                                            }
                                         }
+                                        Intent intent=new Intent(SearchBookActivity.this,HomeActivity.class);
+                                        startActivity(intent);
                                     }
-                                    else {
-                                        int delete_copy = DataAccess.getInstance(SearchBookActivity.this).decreaseOneFromCopyByBarcode(book.get_barcode(),book.get_cnumber());
-                                        if(delete_copy==1){
-                                            Toast.makeText(SearchBookActivity.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
-                                        }
-                                        else {
-                                            Toast.makeText(SearchBookActivity.this,"Problem in deleting copy of "+book.get_bname()+" try again later",Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    Intent intent=new Intent(SearchBookActivity.this,HomeActivity.class);
-                                    startActivity(intent);
-                                }
-                            });
-                            dialog.show();
+                                });
+                                dialog.show();
+                            }
                             break;
                     }
 
@@ -250,12 +267,11 @@ public class SearchBookActivity extends AppCompatActivity  {
                     switch (incoming_activity){
                         case "return":
                             try {
-                                Date return_date = new SimpleDateFormat("dd/MM/yyyy").parse(borrowingBookList.get(position).get_rdate());
-                                Date check_date = getCheckDate(borrowingBookList.get(position).get_rdate().toString());
+                                Date check_date = getCheckDate(borrowingBookList.get(position).get_rdate());
                                 Date tooday = new SimpleDateFormat("dd/MM/yyyy").parse(getTodaysDate());
 
-                                if(check_date.before(tooday)){
-                                    stopAlarm(SearchBookActivity.this);
+                                if(check_date.after(tooday)){
+                                    //stopAlarm(SearchBookActivity.this);
                                 }
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
                                 dialog.setMessage("Do you wish to end this book borrow?");
@@ -333,9 +349,11 @@ public class SearchBookActivity extends AppCompatActivity  {
 
     public void stopAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent your_intent = new Intent();
-        PendingIntent your_pending_intent = PendingIntent.getBroadcast(context, (int) borrowingBookList.get(current_position).get_id(), your_intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.cancel(your_pending_intent);
+        Intent your_intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent your_pending_intent = PendingIntent.getService(context, (int) borrowingBookList.get(current_position).get_id(), your_intent, PendingIntent.FLAG_NO_CREATE);
+        if(your_pending_intent!=null && alarmManager!=null){
+            alarmManager.cancel(your_pending_intent);
+        }
     }
 
     private Date getCheckDate(String date_check)
