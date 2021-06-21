@@ -30,6 +30,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.R;
@@ -84,7 +85,7 @@ public class ReportActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                shareToWhatsapp();
             }
         });
 
@@ -154,24 +155,25 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
-//    public void shareToWhatsapp(){
-//        File outputFile = new File(Environment.DIRECTORY_DOWNLOADS), "example.pdf");
-//        Uri uri = Uri.fromFile(outputFile);
-//        Intent share = new Intent();
-//        share.setAction(Intent.ACTION_SEND);
-//        share.setType("application/pdf");
-//        share.putExtra(Intent.EXTRA_STREAM, uri);
-//        share.setPackage("com.whatsapp");
-//
-//        startActivity(share);
-//    }
+    public void shareToWhatsapp(){
+        File file=new File(this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),BOOK_FILE);
+        Uri uri = FileProvider.getUriForFile(this,"com.mydomain.fileprovider",file);
+        Intent share = new Intent();
+        share.setAction(Intent.ACTION_SEND);
+        share.setType("application/pdf");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        share.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        startActivity(share);
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createPdf() {
 
         Document document = new Document(PageSize.A4, 10, 10, 10, 10);
-        File file=new File(this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString()+"/"+BOOK_FILE);
+        File file=new File(this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),BOOK_FILE);
         try {
             PdfWriter.getInstance(document,new FileOutputStream(file));
 
