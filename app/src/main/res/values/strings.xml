@@ -15,7 +15,7 @@
     <string name="qr_s">QR Scan</string>
     <string name="status_title">Status</string>
     <string name="f_name">Full Name</string>
-    <string name="return_d">Return Date</string>
+    <string name="return_d">Return Date: </string>
     <string name="send_sms">Send Sms</string>
     <string name="change_d">Change Date</string>
     <string name="borrowing_form">Borrowing Form</string>
@@ -57,7 +57,7 @@
     <string name="try_again">try again later</string>
     <string name="problem_delete">Problem in deleting copy of</string>
     <string name="One_copy">One copy of the book</string>
-    <string name="Cant_delete_book">Can`t delete book, all copy`s are in borrowed status</string>
+    <string name="Cant_delete_book">Can`t delete book, all copies are in borrowed status</string>
     <string name="yes">YES</string>
     <string name="problem_returned">Problem in returning of the book:</string>
     <string name="return_by">returned by</string>

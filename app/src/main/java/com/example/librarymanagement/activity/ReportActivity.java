@@ -182,13 +182,13 @@ public class ReportActivity extends AppCompatActivity {
             if(document.isOpen()) {
                 PdfPTable table = new PdfPTable(4);
 
-                PdfPCell col1 = new PdfPCell(new Phrase(getString(R.string.book_name)));
+                PdfPCell col1 = new PdfPCell(new Phrase("Book Name"));
                 table.addCell(col1);
-                PdfPCell col2 = new PdfPCell(new Phrase(getString(R.string.author)));
+                PdfPCell col2 = new PdfPCell(new Phrase("Author"));
                 table.addCell(col2);
-                PdfPCell col3 = new PdfPCell(new Phrase(getString(R.string.copy)));
+                PdfPCell col3 = new PdfPCell(new Phrase("#copies"));
                 table.addCell(col3);
-                PdfPCell col4 = new PdfPCell(new Phrase(getString(R.string.copy_use)));
+                PdfPCell col4 = new PdfPCell(new Phrase("#copies in use"));
                 table.addCell(col4);
 
 

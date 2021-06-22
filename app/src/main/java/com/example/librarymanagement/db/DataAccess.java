@@ -309,7 +309,7 @@ public class DataAccess {
     }
 
     /**
-     * add one to number of copy's
+     * add one to number of copies
      * @param barcode book barcode to look for
      * @param current_copy the current copy number
      * @return the number of rows updated.  Will be 1 if updated delete was successful and 0 if not
@@ -327,7 +327,7 @@ public class DataAccess {
     }
 
     /**
-     * decrease one to number of copy's
+     * decrease one to number of copies
      * @param barcode book barcode to look for
      * @param current_copy the current copy number
      * @return the number of rows updated.  Will be 1 if the updated was successful and 0 if not

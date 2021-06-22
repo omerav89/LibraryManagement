@@ -76,7 +76,7 @@ public class BookStatusActivity extends AppCompatActivity {
         if(borrowingBook != null){
             f_name.setText(borrowingBook.get_borrower().get_fname() + " "+ borrowingBook.get_borrower().get_lname());
             b_name.setText(borrowingBook.get_book().get_bname());
-            return_d.setText(borrowingBook.get_rdate());
+            return_d.setText(return_d.getText().toString()+ " "+ borrowingBook.get_rdate());
         }
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
