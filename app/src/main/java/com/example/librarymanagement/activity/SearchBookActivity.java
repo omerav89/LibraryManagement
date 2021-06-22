@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.example.librarymanagement.model.BorrowingBook;
 import com.example.librarymanagement.service.NotificationReceiver;
@@ -58,6 +60,8 @@ public class SearchBookActivity extends AppCompatActivity  {
     private Gson gson = new Gson();
     private String book_obj_as_json="";
     private int current_position=-1;
+    private static final int SPEECH_REQUEST_CODE = 0;
+
 
 
     @Override
@@ -329,7 +333,17 @@ public class SearchBookActivity extends AppCompatActivity  {
         MenuInflater inflater =getMenuInflater();
         inflater.inflate(R.menu.searchmen, menu);
 
-        MenuItem searchItem= menu.findItem(R.id.action_search);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem voiceItem =  menu.findItem(R.id.voice);
+
+        voiceItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                displaySpeechRecognizer();
+                return false;
+            }
+        });
+
         SearchView searchView=(SearchView) searchItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -379,4 +393,29 @@ public class SearchBookActivity extends AppCompatActivity  {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         return day+"/"+month+"/"+year;
     }
+
+
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+    // This starts the activity and populates the intent with the speech text.
+        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+    }
+
+    // This callback is invoked when the Speech Recognizer returns.
+    // This is where you process the intent and extract the speech text from the intent.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+            bookAdapter.getFilter().filter(spokenText);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

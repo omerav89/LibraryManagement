@@ -56,8 +56,11 @@ public class BorrowBookActivity extends AppCompatActivity {
     private long ok_adding_borrowing;
     private boolean date_is_good=false;
 
-/**for borrow the book need to check if something is missed like
- * phone num or first name and show msg if something wrong**/
+    /**
+     * for borrow the book need to check if something is missed like
+     * phone num or first name and show msg if something wrong
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +104,7 @@ public class BorrowBookActivity extends AppCompatActivity {
                 openDatePicker(v);
             }
         });
+
 
         btn_borrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +157,11 @@ public class BorrowBookActivity extends AppCompatActivity {
             }
         });
     }
-/**get the date for today **/
+
+    /**
+     * get the date for today
+      * @return string of current date
+     */
     private String getTodaysDate()
     {
         Calendar cal = Calendar.getInstance();
@@ -163,7 +171,10 @@ public class BorrowBookActivity extends AppCompatActivity {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         return day+"/"+month+"/"+year;
     }
-/**check condition for change date for return book **/
+
+    /**
+     * check condition for change date for return book
+     */
     private void initDatePicker()
     {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
@@ -229,7 +240,11 @@ public class BorrowBookActivity extends AppCompatActivity {
         builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
         return builder.build() ;
     }
-/**set date for return book  **/
+
+    /**
+     * set date for return book notification
+     * @param view
+     */
     public void setDate (View view) {
         try {
             String []splitDate = return_date_button.getText().toString().split("/");
