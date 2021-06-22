@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.example.librarymanagement.R;
+
 public class NoticeDialogFragment extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
@@ -17,15 +19,15 @@ public class NoticeDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Book already exist");
-        builder.setMessage("Do you wish to add another copy?")
-                .setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.Book_already_exist));
+        builder.setMessage(getString(R.string.add_copy))
+                .setPositiveButton(getString(R.string.Approve), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the positive button event back to the host activity
                         listener.onDialogPositiveClick(NoticeDialogFragment.this);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the negative button event back to the host activity
                         listener.onDialogNegativeClick(NoticeDialogFragment.this);
@@ -48,6 +50,7 @@ public class NoticeDialogFragment extends DialogFragment {
             // Instantiate the NoticeDialogListener so we can send events to the host
             listener = (NoticeDialogListener) context;
         } catch (ClassCastException e) {
+
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(" must implement NoticeDialogListener");
         }

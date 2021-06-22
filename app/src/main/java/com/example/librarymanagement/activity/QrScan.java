@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.librarymanagement.R;
 import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.fragment.NoticeDialogFragment;
 import com.example.librarymanagement.model.Book;
@@ -102,13 +103,13 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.PermissionGranted), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.PermissionDenined), Toast.LENGTH_SHORT).show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                                 != PackageManager.PERMISSION_GRANTED) {
-                            showMessageOKCancel("You need to allow access permissions",
+                            showMessageOKCancel(getString(R.string.need_allow),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -132,8 +133,8 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(QrScan.this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(getString(R.string.OK), okListener)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create()
                 .show();
     }
@@ -190,12 +191,12 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
         if(data_change==1){
             copy=book.get_cnumber();
             copy+=1;
-            Toast.makeText(this,"Add copy to the book "+book.get_bname()+
-                    " current copy number: "+copy,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.addcopy)+book.get_bname()+
+                    getString(R.string.cuurent_copy) +copy,Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(this,"Couldn't add copy to the book "+book.get_bname()+
-                    ", try again later",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  getString(R.string.cant_add)+book.get_bname()+
+                    getString(R.string.try_again),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -235,8 +236,8 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                 break;
             case "remove":book = DataAccess.getInstance(this).getBookByBarcode(barcode_res);
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setMessage("Are you sure you want to delete the book: "+book.get_bname()+"?");
-                dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                dialog.setMessage(getString(R.string.are_delete) +book.get_bname()+"?");
+                dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -245,25 +246,25 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
 
 
                 /** check condition for action delete from db **/
-                dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                dialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(book.get_cnumber()==1){
                             int delete=DataAccess.getInstance(QrScan.this).deleteBookById(book.get_id());
                             if(delete==1){
-                                Toast.makeText(QrScan.this,"The book "+book.get_bname()+" was deleted from database",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(QrScan.this,getString(R.string.The_book)+book.get_bname()+getString(R.string.was_delete),Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(QrScan.this,"The book "+book.get_bname()+" was not deleted from database, try again later",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(QrScan.this,getString(R.string.The_book)+book.get_bname()+getString(R.string.not_delete_db),Toast.LENGTH_SHORT).show();
                             }
                         }
                         else {
                             int delete_copy = DataAccess.getInstance(QrScan.this).decreaseOneFromCopyByBarcode(book.get_barcode(),book.get_cnumber());
                             if(delete_copy==1){
-                                Toast.makeText(QrScan.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(QrScan.this,getString(R.string.One_copy)+book.get_bname()+getString(R.string.was_delete),Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(QrScan.this,"Problem in deleting copy of "+book.get_bname()+" try again later",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(QrScan.this,getString(R.string.problem_delete)+book.get_bname()+getString(R.string.try_again),Toast.LENGTH_SHORT).show();
                             }
                         }
                         Intent intent=new Intent(QrScan.this,HomeActivity.class);
