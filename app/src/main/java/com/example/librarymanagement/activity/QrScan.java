@@ -242,6 +242,9 @@ public class QrScan extends FragmentActivity implements ZXingScannerView.ResultH
                         dialog.dismiss();
                     }
                 });
+
+
+                /** check condition for action delete from db **/
                 dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

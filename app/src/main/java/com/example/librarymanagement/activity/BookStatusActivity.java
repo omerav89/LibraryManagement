@@ -47,7 +47,7 @@ public class BookStatusActivity extends AppCompatActivity {
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
     private final static String default_notification_channel_id = "default" ;
     final Calendar myCalendar = Calendar. getInstance () ;
-
+/**check condition and send the sms **/
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +94,9 @@ public class BookStatusActivity extends AppCompatActivity {
             }
         });
     }
-
+/**
+ * check the date and show toast  For appropriate action
+ * */
     private void initDatePicker()
     {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
@@ -157,7 +159,7 @@ public class BookStatusActivity extends AppCompatActivity {
        // datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
     }
-
+/**make the date to string **/
     private String makeDateString(int day, int month, int year)
     {
         return day+ "/" + month + "/" + year;
@@ -167,7 +169,7 @@ public class BookStatusActivity extends AppCompatActivity {
     {
         datePickerDialog.show();
     }
-
+/**check condition and stop the alarm **/
     public void stopAlarm(Context context) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent your_intent = new Intent(this, NotificationReceiver.class);
@@ -201,7 +203,7 @@ public class BookStatusActivity extends AppCompatActivity {
         return builder.build() ;
     }
 
-
+    /**set the date and **/
     public void setDate () {
         try {
             String []splitDate = dateButton.getText().toString().split("/");
@@ -226,7 +228,7 @@ public class BookStatusActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+/**get today date**/
     private String getTodaysDate()
     {
         Calendar cal = Calendar.getInstance();
