@@ -28,6 +28,46 @@
     <string name="author">Author</string>
     <string name="copy">copy #</string>
     <string name="send">Send</string>
+    <string name="PermissionGranted">Permission Granted</string>
+    <string name="PermissionDenined">Permission Denined</string>
+    <string name="Probleminopenfiletryagainlater">Problem in open file, try again later</string>
+    <string name="filenotfound">file not found</string>
+    <string name="Problemindoc">Problem in the document, try again later</string>
+    <string name="Downloadcompleted">Download completed, file in Documents folder</string>
+    <string name="copy_use">#copy\'s in use</string>
+    <string name="Book_already_exist">Book already exist</string>
+    <string name="add_copy">Do you wish to add another copy?</string>
+    <string name="Approve">Approve</string>
+    <string name="need_return">need to return the book:</string>
+    <string name="Book_Deadline">Book Deadline Notification</string>
+    <string name="at">at:</string>
+    <string name="The_Date_is_not_Correct">The Date is not Correct!</string>
+    <string name="dateupdate">The Date Updated</string>
+    <string name="datenetup">The Date Not Updated Pleas try again later !</string>
+    <string name="SMS_faild">SMS faild, please try again</string>
+    <string name="SMS_sent">SMS sent</string>
+    <string name="Hello_dear">Hello dear</string>
+    <string name="you_need_return">you need to return the book</string>
+    <string name="tomorrow">tomorrow,</string>
+    <string name="tnx">Thank you, regards</string>
+    <string name="are_delete">Are you sure you want to delete the book:</string>
+    <string name="The_book">The book</string>
+    <string name="was_delete">was deleted from database</string>
+    <string name="not_delete_db">was not deleted from database, try again later</string>
+    <string name="try_again">try again later</string>
+    <string name="problem_delete">Problem in deleting copy of</string>
+    <string name="One_copy">One copy of the book</string>
+    <string name="Cant_delete_book">Can`t delete book, all copy`s are in borrowed status</string>
+    <string name="yes">YES</string>
+    <string name="problem_returned">Problem in returning of the book:</string>
+    <string name="return_by">returned by</string>
+    <string name="doyou">Do you wish to end this book borrow?</string>
+    <string name="no_borrowing_DB">There is no borrowing in DB</string>
+    <string name="addcopy">Add copy to the book</string>
+    <string name="cant_add">Couldn\'t add copy to the book</string>
+    <string name="cuurent_copy">current copy number:</string>
+    <string name="OK">OK</string>
+    <string name="need_allow">You need to allow access permissions</string>
 
 
 </resources>

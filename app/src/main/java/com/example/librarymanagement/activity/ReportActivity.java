@@ -36,9 +36,7 @@ import com.example.librarymanagement.db.DataAccess;
 import com.example.librarymanagement.R;
 import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.model.BorrowingBook;
-import com.google.zxing.pdf417.PDF417Writer;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -179,19 +177,18 @@ public class ReportActivity extends AppCompatActivity {
 
             document.open();
 
-            document.addTitle("Book list of all my books");
 
 
             if(document.isOpen()) {
                 PdfPTable table = new PdfPTable(4);
 
-                PdfPCell col1 = new PdfPCell(new Phrase("Book Name"));
+                PdfPCell col1 = new PdfPCell(new Phrase(getString(R.string.book_name)));
                 table.addCell(col1);
-                PdfPCell col2 = new PdfPCell(new Phrase("Author"));
+                PdfPCell col2 = new PdfPCell(new Phrase(getString(R.string.author)));
                 table.addCell(col2);
-                PdfPCell col3 = new PdfPCell(new Phrase("Total #copy's"));
+                PdfPCell col3 = new PdfPCell(new Phrase(getString(R.string.copy)));
                 table.addCell(col3);
-                PdfPCell col4 = new PdfPCell(new Phrase(" #copy's in use"));
+                PdfPCell col4 = new PdfPCell(new Phrase(getString(R.string.copy_use)));
                 table.addCell(col4);
 
 
@@ -220,15 +217,15 @@ public class ReportActivity extends AppCompatActivity {
 
             }
             else {
-                Toast.makeText(this, "Problem in open file, try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getString(R.string.Probleminopenfiletryagainlater) , Toast.LENGTH_SHORT).show();
             }
         } catch (FileNotFoundException e) {
-            Toast.makeText(this,"file not found",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.filenotfound),Toast.LENGTH_SHORT).show();
         } catch (DocumentException e) {
-            e.printStackTrace();
+            Toast.makeText(this, getString(R.string.Problemindoc), Toast.LENGTH_SHORT).show();
         }finally {
             document.close();
-            Toast.makeText(this, "Download completed, file in Documents folder", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,getString(R.string.Downloadcompleted) , Toast.LENGTH_LONG).show();
         }
 
     }
@@ -245,7 +242,12 @@ public class ReportActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
-
+    /**
+     *
+     * @param requestCode the number of permissions
+     * @param permissions write
+     * @param grantResults the result of
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -257,10 +259,10 @@ public class ReportActivity extends AppCompatActivity {
                 boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
                 if (writeStorage && readStorage) {
-                    Toast.makeText(this, "Permission Granted..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.PermissionGranted), Toast.LENGTH_SHORT).show();
                     createPdf();
                 } else {
-                    Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.PermissionDenined), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

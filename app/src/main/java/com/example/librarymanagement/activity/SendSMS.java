@@ -61,10 +61,10 @@ public class SendSMS extends AppCompatActivity {
             phone_number.setText(borrowingBook.get_borrower().get_pnumber());
         }
 
-        message = "Hello dear "+ borrowingBook.get_borrower().get_fname()+" "+
-                borrowingBook.get_borrower().get_lname()+ " you need to return the book "+
-                borrowingBook.get_book().get_bname()+" tomorrow, \n" +
-                "Thank you, regards";
+        message = getString(R.string.Hello_dear)+ borrowingBook.get_borrower().get_fname()+" "+
+                borrowingBook.get_borrower().get_lname()+ getString(R.string.you_need_return)+
+                borrowingBook.get_book().get_bname()+ getString(R.string.tomorrow) +
+                getString(R.string.tnx);
 
         smsText.setText(message);
 
@@ -97,7 +97,7 @@ public class SendSMS extends AppCompatActivity {
 private void Send(){
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(this.phone_number.getText().toString(), null, smsText.getText().toString(), null, null);
-        Toast.makeText(getApplicationContext(), "SMS sent.",
+        Toast.makeText(getApplicationContext(),getString(R.string.SMS_sent) ,
                 Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SendSMS.this,HomeActivity.class);
         startActivity(intent);
@@ -112,7 +112,7 @@ private void Send(){
                    Send();
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                            getString(R.string.SMS_faild), Toast.LENGTH_LONG).show();
                     return;
                 }
             }

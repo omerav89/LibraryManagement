@@ -148,7 +148,7 @@ public class SearchBookActivity extends AppCompatActivity  {
             case "status":
             case "return":
                 if(borrowingBookList==null || borrowingBookList.size()==0){
-                    Toast.makeText(this,"There is no borrowing in DB",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,getString(R.string.no_borrowing_DB),Toast.LENGTH_SHORT).show();
                 }
                 else {
                     ok=true;
@@ -159,7 +159,7 @@ public class SearchBookActivity extends AppCompatActivity  {
             case "borrow":
             case "remove":
                 if(bookList==null || bookList.size()==0){
-                    Toast.makeText(this,"There is no borrowing in DB",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,getString(R.string.no_borrowing_DB),Toast.LENGTH_SHORT).show();
                 }
                 else {
                     ok=true;
@@ -200,7 +200,7 @@ public class SearchBookActivity extends AppCompatActivity  {
                             boolean ok=false;
                             if(borrowingBook.length!=0){
                                 if(borrowingBook.length==book.get_cnumber()){
-                                    Toast.makeText(SearchBookActivity.this,"Can`t delete book, all copy`s are in borrowed status",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SearchBookActivity.this,getString(R.string.Cant_delete_book),Toast.LENGTH_LONG).show();
                                 }
                                 else {
                                     ok=true;
@@ -211,32 +211,32 @@ public class SearchBookActivity extends AppCompatActivity  {
                             }
                             if(ok){
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
-                                dialog.setMessage("Are you sure you want to delete the book: "+book.get_bname()+"?");
-                                dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                                dialog.setMessage( getString(R.string.are_delete)+book.get_bname()+"?");
+                                dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 });
-                                dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                dialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(book.get_cnumber()==1){
                                             int delete=DataAccess.getInstance(SearchBookActivity.this).deleteBookById(book.get_id());
                                             if(delete==1){
-                                                Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(SearchBookActivity.this,getString(R.string.The_book)+book.get_bname() +getString(R.string.was_delete),Toast.LENGTH_LONG).show();
                                             }
                                             else {
-                                                Toast.makeText(SearchBookActivity.this,"The book "+book.get_bname()+" was not deleted from database, try again later",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SearchBookActivity.this,getString(R.string.The_book)+book.get_bname()+getString(R.string.not_delete_db),Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         else {
                                             int delete_copy = DataAccess.getInstance(SearchBookActivity.this).decreaseOneFromCopyByBarcode(book.get_barcode(),book.get_cnumber());
                                             if(delete_copy==1){
-                                                Toast.makeText(SearchBookActivity.this,"One copy of the book "+book.get_bname()+" was deleted from database",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(SearchBookActivity.this,getString(R.string.One_copy) +book.get_bname()+getString(R.string.was_delete),Toast.LENGTH_LONG).show();
                                             }
                                             else {
-                                                Toast.makeText(SearchBookActivity.this,"Problem in deleting copy of "+book.get_bname()+" try again later",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SearchBookActivity.this,getString(R.string.problem_delete)+book.get_bname()+getString(R.string.try_again),Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         Intent intent=new Intent(SearchBookActivity.this,HomeActivity.class);
@@ -274,14 +274,14 @@ public class SearchBookActivity extends AppCompatActivity  {
                                     //stopAlarm(SearchBookActivity.this);
                                 }
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(SearchBookActivity.this);
-                                dialog.setMessage("Do you wish to end this book borrow?");
-                                dialog.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                                dialog.setMessage(getString(R.string.doyou));
+                                dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 });
-                                dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                dialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
 
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -291,14 +291,14 @@ public class SearchBookActivity extends AppCompatActivity  {
                                                         borrowingBookList.get(position).get_tdate(),
                                                         borrowingBookList.get(position).get_rdate());
                                         if(returned==1){
-                                            Toast.makeText(SearchBookActivity.this,"The book: "+borrowingBookList.get(position).get_book().get_bname()+
-                                                            " returned by: "+borrowingBookList.get(position).get_borrower().get_fname()+" "+borrowingBookList.get(position).get_borrower().get_lname(),
+                                            Toast.makeText(SearchBookActivity.this,getString(R.string.The_book)+borrowingBookList.get(position).get_book().get_bname()+
+                                                            getString(R.string.return_by)+borrowingBookList.get(position).get_borrower().get_fname()+" "+borrowingBookList.get(position).get_borrower().get_lname(),
                                                     Toast.LENGTH_LONG).show();
                                         }
                                         else {
-                                            Toast.makeText(SearchBookActivity.this,"Problem in returning of the book: "+borrowingBookList.get(position).get_book().get_bname()+
-                                                            " returned by: "+borrowingBookList.get(position).get_borrower().get_fname()+" "+borrowingBookList.get(position).get_borrower().get_lname()+
-                                                            " try again later",
+                                            Toast.makeText(SearchBookActivity.this,getString(R.string.problem_returned) +borrowingBookList.get(position).get_book().get_bname()+
+                                                            getString(R.string.return_by)+borrowingBookList.get(position).get_borrower().get_fname()+" "+borrowingBookList.get(position).get_borrower().get_lname()+
+                                                            getString(R.string.try_again),
                                                     Toast.LENGTH_LONG).show();
                                         }
                                         Intent intent1 = new Intent(SearchBookActivity.this,HomeActivity.class);

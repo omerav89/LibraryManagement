@@ -48,6 +48,7 @@ public class BookStatusActivity extends AppCompatActivity {
     private final static String default_notification_channel_id = "default" ;
     final Calendar myCalendar = Calendar. getInstance () ;
 /**check condition and send the sms **/
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +116,7 @@ public class BookStatusActivity extends AppCompatActivity {
                     Date oldDate= new SimpleDateFormat("dd/MM/yyyy").parse(oldTakeDate);
                     if (oldDate.after(newDate))
                     {
-                        Toast.makeText(BookStatusActivity.this,"The Date is not Correct!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(BookStatusActivity.this,getString(R.string.The_Date_is_not_Correct),Toast.LENGTH_LONG).show();
                     }
                     else
                         {
@@ -126,12 +127,12 @@ public class BookStatusActivity extends AppCompatActivity {
                             {
                                 setDate();
                                 return_d.setText(newReturnDate);
-                                Toast.makeText(BookStatusActivity.this,"The Date Updated !",Toast.LENGTH_LONG).show();
+                                Toast.makeText(BookStatusActivity.this,getString(R.string.dateupdate),Toast.LENGTH_LONG).show();
                                 Intent intent= new Intent(BookStatusActivity.this,HomeActivity.class);
                                 startActivity(intent);
                             }
                             else {
-                                Toast.makeText(BookStatusActivity.this, "The Date Not Updated Pleas try again later !", Toast.LENGTH_LONG).show();
+                                Toast.makeText(BookStatusActivity.this, getString(R.string.datenetup), Toast.LENGTH_LONG).show();
                                 Intent intent= new Intent(BookStatusActivity.this,HomeActivity.class);
                                 startActivity(intent);
                             }
@@ -160,6 +161,13 @@ public class BookStatusActivity extends AppCompatActivity {
 
     }
 /**make the date to string **/
+    /**
+     *
+     * @param day
+     * @param month
+     * @param year
+     * @return
+     */
     private String makeDateString(int day, int month, int year)
     {
         return day+ "/" + month + "/" + year;
@@ -191,10 +199,12 @@ public class BookStatusActivity extends AppCompatActivity {
         alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
     }
 
-
+    /**
+  build the notification
+     */
     private Notification getNotification (String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
-        builder.setContentTitle( "Book Deadline Notification" ) ;
+        builder.setContentTitle( getString(R.string.Book_Deadline) ) ;
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(content));
         builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         builder.setSmallIcon(R.drawable.notification_book ) ;
@@ -203,7 +213,7 @@ public class BookStatusActivity extends AppCompatActivity {
         return builder.build() ;
     }
 
-    /**set the date and **/
+    /**set the date for send notification day before return date  **/
     public void setDate () {
         try {
             String []splitDate = dateButton.getText().toString().split("/");
@@ -221,8 +231,8 @@ public class BookStatusActivity extends AppCompatActivity {
 
             scheduleNotification(getNotification(
                     borrowingBook.get_borrower().get_fname()+" "+borrowingBook.get_borrower().get_lname()+
-                            " need to return the book: "+
-                            borrowingBook.get_book().get_bname()+" at: "+ dateButton.getText().toString()
+                           getString(R.string.need_return)+
+                            borrowingBook.get_book().get_bname()+ getString(R.string.at)+ dateButton.getText().toString()
             ), diff) ;
         } catch (ParseException e) {
             e.printStackTrace();
