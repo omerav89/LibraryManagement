@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -233,24 +234,28 @@ public class BorrowBookActivity extends AppCompatActivity {
         try {
             String []splitDate = return_date_button.getText().toString().split("/");
             String now=getTodaysDate();
+
             Date current =  new SimpleDateFormat("dd/MM/yyyy").parse(now);
 
-            myCalendar.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
-            myCalendar.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
-            myCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
-            myCalendar.add(Calendar.DAY_OF_MONTH,-1);
-            Date date = myCalendar .getTime() ;
 
-            long diff=date.getTime()-current.getTime();
+            int day=Integer.parseInt(splitDate[0])-1;
+            String date1= day+"/"+splitDate[1]+"/"+splitDate[2];
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(date1);
+
+
+            long diff=Math.abs(date.getTime()-current.getTime());
+            long diffInDays =  TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+            long result = diffInDays*24*60*60*1000;
+
             scheduleNotification(getNotification(
                     f_name.getText().toString()+" "+l_name.getText().toString()+
                             " need to return the book: "+
                             book_title.getText().toString()+" at: "+ return_date_button.getText().toString()
-            ), diff) ;
+            ), result) ;
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
     }
 }
