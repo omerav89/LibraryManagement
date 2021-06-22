@@ -168,7 +168,7 @@ public class ReportActivity extends AppCompatActivity {
         startActivity(share);
     }
 
-
+/**create the pdf file whit thr table **/
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createPdf() {
 

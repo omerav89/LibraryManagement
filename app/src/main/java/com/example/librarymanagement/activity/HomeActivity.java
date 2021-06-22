@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         b_status=findViewById(R.id.status);
         add_b=findViewById(R.id.addBook);
         remove_b=findViewById(R.id.remove);
-
+/**open the Borrow book activity**/
         borrow_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/**open the Return book activity**/
         return_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/**open the edit book activity**/
         edit_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/**open the Report activity**/
         report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+/**open the Book status activity**/
         b_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/**open the Add book activity**/
         add_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/**open the Remove book activity**/
         remove_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

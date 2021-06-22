@@ -36,7 +36,7 @@ public class AddBookActivity extends AppCompatActivity {
     private final static String SENDING_ACTIVITY="sending_activity";
     private Book incoming_book;
 
-
+/**open barcode scan **/
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,9 @@ public class AddBookActivity extends AppCompatActivity {
         b_author=findViewById(R.id.author);
         summery=findViewById(R.id.summery);
         add_btn=findViewById(R.id.add_btn);
-
+/**
+check if something is missed and after add book
+ **/
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

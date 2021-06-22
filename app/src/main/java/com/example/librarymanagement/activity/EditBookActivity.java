@@ -29,6 +29,10 @@ public class EditBookActivity extends AppCompatActivity {
     private String book_obj_as_json="";
 
     @Override
+
+    /**
+     * check the conditions for edit a book
+     * **/
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_book);
@@ -57,12 +61,12 @@ public class EditBookActivity extends AppCompatActivity {
             b_author.setText(book.get_author());
             summery.setText(book.get_description());
         }
-
+/**check if author field its ok **/
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(b_author.getText().toString().matches("")){
-                    Toast.makeText(EditBookActivity.this,"Please fill autor field",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditBookActivity.this,"Please fill author field",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     updateBookData();
@@ -79,7 +83,7 @@ public class EditBookActivity extends AppCompatActivity {
         });
 
     }
-
+/**update the book **/
     public void updateBookData(){
         int result;
         result= DataAccess.getInstance(this).updateBookDataByName(b_name.getText().toString(),b_author.getText().toString(),summery.getText().toString());
