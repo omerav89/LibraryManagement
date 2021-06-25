@@ -9,6 +9,11 @@ import android.content.Intent;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
+    /**
+     * class that receive the alarm manager broadcast
+     * and launch the notification
+     */
+
     public static String NOTIFICATION_ID = "notification-id" ;
     public static String NOTIFICATION = "notification" ;
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;

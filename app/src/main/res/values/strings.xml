@@ -46,12 +46,12 @@
     <string name="datenetup">The Date Not Updated Pleas try again later !</string>
     <string name="SMS_faild">SMS faild, please try again</string>
     <string name="SMS_sent">SMS sent</string>
-    <string name="Hello_dear">Hello dear</string>
-    <string name="you_need_return">you need to return the book</string>
-    <string name="tomorrow">tomorrow,</string>
+    <string name="Hello_dear">Hello dear </string>
+    <string name="you_need_return"> you need to return the book</string>
+    <string name="tomorrow">by,</string>
     <string name="tnx">Thank you, regards</string>
     <string name="are_delete">Are you sure you want to delete the book:</string>
-    <string name="The_book">The book</string>
+    <string name="The_book">"The book "</string>
     <string name="was_delete">was deleted from database</string>
     <string name="not_delete_db">was not deleted from database, try again later</string>
     <string name="try_again">try again later</string>
@@ -60,7 +60,7 @@
     <string name="Cant_delete_book">Can`t delete book, all copies are in borrowed status</string>
     <string name="yes">YES</string>
     <string name="problem_returned">Problem in returning of the book:</string>
-    <string name="return_by">returned by</string>
+    <string name="return_by">" returned by "</string>
     <string name="doyou">Do you wish to end this book borrow?</string>
     <string name="no_borrowing_DB">There is no borrowing in DB</string>
     <string name="addcopy">Add copy to the book</string>

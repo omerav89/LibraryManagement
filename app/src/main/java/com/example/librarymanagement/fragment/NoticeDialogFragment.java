@@ -12,8 +12,13 @@ import com.example.librarymanagement.R;
 
 public class NoticeDialogFragment extends DialogFragment {
 
+    /**
+     * class for creation of dialog message box
+     */
+
     // Use this instance of the interface to deliver action events
     NoticeDialogListener listener;
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

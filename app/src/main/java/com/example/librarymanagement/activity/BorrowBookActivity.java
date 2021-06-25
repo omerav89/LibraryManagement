@@ -226,7 +226,7 @@ public class BorrowBookActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
         assert alarmManager != null;
         long futureInMillis = SystemClock.elapsedRealtime()+delay;
-        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis, pendingIntent) ;
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP ,futureInMillis, pendingIntent); ;
     }
 
 
@@ -261,13 +261,13 @@ public class BorrowBookActivity extends AppCompatActivity {
             long diff=Math.abs(date.getTime()-current.getTime());
             long diffInDays =  TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-            long result = diffInDays*24*60*60*1000;
-
+            long result_in_millis = diffInDays*24*60*60*1000;
+            
             scheduleNotification(getNotification(
                     f_name.getText().toString()+" "+l_name.getText().toString()+
                             " need to return the book: "+
                             book_title.getText().toString()+" at: "+ return_date_button.getText().toString()
-            ), result) ;
+            ), result_in_millis) ;
         } catch (ParseException e) {
             e.printStackTrace();
         }

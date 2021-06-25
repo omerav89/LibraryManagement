@@ -19,6 +19,12 @@ import java.util.List;
 
 public class AdapterSearchBorrowingBook extends RecyclerView.Adapter<AdapterSearchBorrowingBook.ExampleViewHolder> implements Filterable {
 
+    /**
+     *class that handle  borrowing Book List in search book activity
+     * set the view
+     * commits changes in the list (filter) and updates
+     */
+
     private List<BorrowingBook> borrowingBookList;
     private List<BorrowingBook> borrowingBookListFull;
     private AdapterSearchBook.OnItemClickListener mListener;
@@ -30,6 +36,7 @@ public class AdapterSearchBorrowingBook extends RecyclerView.Adapter<AdapterSear
     public interface OnItemClickListener{
         void OnItemClick(int position);
     }
+
 
     class ExampleViewHolder extends RecyclerView.ViewHolder {
 
@@ -60,11 +67,18 @@ public class AdapterSearchBorrowingBook extends RecyclerView.Adapter<AdapterSear
 
     }
 
+    /**
+     * make makes two identical lists of borrowingBookList
+     * @param borrowingBookList the list
+     */
     public AdapterSearchBorrowingBook(List<BorrowingBook> borrowingBookList) {
         this.borrowingBookList = borrowingBookList;
         borrowingBookListFull = new ArrayList<>(this.borrowingBookList );
     }
 
+    /**
+     *connect the borrowing_item xml to his parent (book_search.xml)
+     */
     @NonNull
     @Override
     public AdapterSearchBorrowingBook.ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -73,6 +87,11 @@ public class AdapterSearchBorrowingBook extends RecyclerView.Adapter<AdapterSear
         return new AdapterSearchBorrowingBook.ExampleViewHolder(v,mListener);
     }
 
+    /**
+     * set the item view (the data)
+     * @param holder the view holder
+     * @param position the position in the list (number)
+     */
     @Override
     public void onBindViewHolder(@NonNull AdapterSearchBorrowingBook.ExampleViewHolder holder, int position) {
         BorrowingBook currentItem = borrowingBookList.get(position);
@@ -92,6 +111,9 @@ public class AdapterSearchBorrowingBook extends RecyclerView.Adapter<AdapterSear
         return exampleFilter;
     }
 
+    /**
+     * filters the list by given text string
+     */
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -115,6 +137,9 @@ public class AdapterSearchBorrowingBook extends RecyclerView.Adapter<AdapterSear
             return results;
         }
 
+        /**
+         *publish the filter result
+         */
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             borrowingBookList.clear();

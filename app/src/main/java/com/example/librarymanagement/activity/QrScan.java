@@ -32,7 +32,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QrScan extends FragmentActivity implements ZXingScannerView.ResultHandler, NoticeDialogFragment.NoticeDialogListener{
 
-    private static final int PERMISSION_REQUEST_CODE = 200;
+    private static final int PERMISSION_REQUEST_CODE = 100;
     private static final String TAG ="hii" ;
     private ZXingScannerView mScannerView;
     private final static String SENDING_ACTIVITY="sending_activity";

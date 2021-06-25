@@ -60,11 +60,18 @@ public class AdapterSearchBook extends RecyclerView.Adapter<AdapterSearchBook.Ex
 
     }
 
+    /**
+     * make makes two identical lists of borrowingBookList
+     * @param bookList the list
+     */
     public AdapterSearchBook(List<Book> bookList) {
         this.bookList = bookList;
         bookListFull = new ArrayList<>(bookList);
     }
 
+    /**
+     *connect the book_item xml to his parent (book_search.xml)
+     */
     @NonNull
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -73,6 +80,11 @@ public class AdapterSearchBook extends RecyclerView.Adapter<AdapterSearchBook.Ex
         return new ExampleViewHolder(v,mListener);
     }
 
+    /**
+     * set the item view (the data)
+     * @param holder the view holder
+     * @param position the position in the list (number)
+     */
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
         Book currentItem = bookList.get(position);
@@ -81,16 +93,21 @@ public class AdapterSearchBook extends RecyclerView.Adapter<AdapterSearchBook.Ex
         holder.author_name.setText(currentItem.get_author());
     }
 
+
     @Override
     public int getItemCount() {
         return bookList.size();
     }
+
 
     @Override
     public Filter getFilter() {
         return exampleFilter;
     }
 
+    /**
+     * filters the list by given text string
+     */
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -114,6 +131,9 @@ public class AdapterSearchBook extends RecyclerView.Adapter<AdapterSearchBook.Ex
             return results;
         }
 
+        /**
+         *publish the filter result
+         */
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             bookList.clear();

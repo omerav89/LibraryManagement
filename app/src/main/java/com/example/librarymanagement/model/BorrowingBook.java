@@ -14,6 +14,14 @@ public class BorrowingBook implements Parcelable {
     private String _tdate,_rdate;
     private long _id;
 
+    /**
+     * BorrowingBook constructor
+     * @param _id book id in db
+     * @param _book book id
+     * @param _borrower book borrower id
+     * @param _tdate start date
+     * @param _rdate return date
+     */
     public BorrowingBook(long _id,Book _book, Borrower _borrower, String _tdate, String _rdate) {
         this._id=_id;
         this._book = _book;
@@ -22,6 +30,9 @@ public class BorrowingBook implements Parcelable {
         this._rdate = _rdate;
     }
 
+    /**
+     * Container for a message (data and object references) that can be sent through an IBinder
+     */
     protected BorrowingBook(Parcel in) {
         _id = in.readLong();
         _book = in.readParcelable(Book.class.getClassLoader());
@@ -30,6 +41,9 @@ public class BorrowingBook implements Parcelable {
         _rdate = in.readString();
     }
 
+    /**
+     * creator for parcel
+     */
     public static final Creator<BorrowingBook> CREATOR = new Creator<BorrowingBook>() {
         @Override
         public BorrowingBook createFromParcel(Parcel in) {
@@ -74,6 +88,9 @@ public class BorrowingBook implements Parcelable {
     @Override
     public int describeContents() { return 0; }
 
+    /**
+     * add value to parcel
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(_id);

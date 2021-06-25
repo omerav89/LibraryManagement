@@ -10,7 +10,15 @@ public class Book implements Parcelable {
     private int _id;
 
 
-
+    /**
+     * Book constructor
+     * @param _id id in db
+     * @param _barcode book barcode string
+     * @param _bname book name
+     * @param _author book author
+     * @param _description book description
+     * @param _cnumber number of copies of this book
+     */
     public Book(int _id,String _barcode,String _bname, String _author, String _description, int _cnumber) {
         this._id=_id;
         this._barcode=_barcode;
@@ -20,6 +28,14 @@ public class Book implements Parcelable {
         this._cnumber = _cnumber;
     }
 
+    /**
+     * Book constructor when description is empty
+     * @param _id id in db
+     * @param _barcode book barcode string
+     * @param _bname book name
+     * @param _author book author
+     * @param _cnumber number of copies of this book
+     */
     public Book(int _id,String _barcode,String _bname, String _author, int _cnumber) {
         this._id=_id;
         this._barcode=_barcode;
@@ -29,6 +45,9 @@ public class Book implements Parcelable {
         this._cnumber = _cnumber;
     }
 
+    /**
+     * Container for a message (data and object references) that can be sent through an IBinder
+     */
     protected Book(Parcel in) {
         _bname = in.readString();
         _author = in.readString();
@@ -38,6 +57,9 @@ public class Book implements Parcelable {
         _id = in.readInt();
     }
 
+    /**
+     * creator for parcel
+     */
     public static final Creator<Book> CREATOR = new Creator<Book>() {
         @Override
         public Book createFromParcel(Parcel in) {
@@ -97,6 +119,9 @@ public class Book implements Parcelable {
     @Override
     public int describeContents() { return 0;}
 
+    /**
+     * add value to parcel
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_bname);

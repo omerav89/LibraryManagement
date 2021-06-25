@@ -77,7 +77,7 @@ public class SendSMS extends AppCompatActivity {
     }
 
 
-/**check if have permission **/
+    /**check if have permission **/
     protected void sendSMSMessage() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
@@ -89,20 +89,24 @@ public class SendSMS extends AppCompatActivity {
                         new String[]{Manifest.permission.SEND_SMS},
                         MY_PERMISSIONS_REQUEST_SEND_SMS);
             }
-        }  else Send();
+        }  else {
+            Send();
+        }
 
 
     }
-/**check condition for sending the sms and if everythig ok show the sms send**/
-private void Send(){
+
+    /**check condition for sending the sms and if everythig ok show the sms send**/
+    private void Send(){
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(this.phone_number.getText().toString(), null, smsText.getText().toString(), null, null);
-        Toast.makeText(getApplicationContext(),getString(R.string.SMS_sent) ,
+        Toast.makeText(getApplicationContext(),getString(R.string.SMS_sent),
                 Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SendSMS.this,HomeActivity.class);
         startActivity(intent);
     }
-/**check if the user confirm to send sms **/
+
+    /**check if the user confirm to send sms **/
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         switch (requestCode) {

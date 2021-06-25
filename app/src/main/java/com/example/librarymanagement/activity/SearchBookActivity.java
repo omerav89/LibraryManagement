@@ -60,7 +60,7 @@ public class SearchBookActivity extends AppCompatActivity  {
     private Gson gson = new Gson();
     private String book_obj_as_json="";
     private int current_position=-1;
-    private static final int SPEECH_REQUEST_CODE = 0;
+    private static final int SPEECH_REQUEST_CODE = 10;
 
 
 

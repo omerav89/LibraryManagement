@@ -10,7 +10,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
-
+    /**
+     * queries to run on creation of sb
+     * @param db the db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -32,6 +35,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * queries to run on db update
+     * @param db the db
+     * @param oldVersion old version number
+     * @param newVersion new version number
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE " + BooksSchema.TABLE_BOOK);

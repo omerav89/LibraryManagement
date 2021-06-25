@@ -48,8 +48,8 @@
     <string name="SMS_faild">שליחת ההודעה נכשלה נסה שנית</string>
     <string name="SMS_sent">ההודעה נשלחה</string>
     <string name="Hello_dear">"שלום רב "</string>
-    <string name="you_need_return">"עליך להחזיר את הספר "</string>
-    <string name="tomorrow">"מחר "</string>
+    <string name="you_need_return">" עליך להחזיר את הספר "</string>
+    <string name="tomorrow">"בתאריך "</string>
     <string name="tnx">תודה רבה, בברכה.</string>
     <string name="are_delete">האם אתה בטוח שברצונך למחוק את הספר:</string>
     <string name="The_book">הספר</string>
@@ -61,7 +61,7 @@
     <string name="Cant_delete_book">לא ניתן למחוק את העותק, כל הספרים מושאלים</string>
     <string name="yes">כן</string>
     <string name="problem_returned">"בעיה בהחזרת הספר : "</string>
-    <string name="return_by">הוחזר על ידי:</string>
+    <string name="return_by">"הוחזר על ידי : "</string>
     <string name="doyou">האם ברצונך לסיים את תקופת ההשאלה?</string>
     <string name="no_borrowing_DB">אין ספרים מושאלים במאגר הנתונים</string>
     <string name="addcopy">הוסף עותק לספר</string>

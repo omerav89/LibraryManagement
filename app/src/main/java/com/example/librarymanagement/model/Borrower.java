@@ -8,6 +8,13 @@ public class Borrower implements Parcelable {
     private String _fname, _lname,  _pnumber;
     private int _id;
 
+    /**
+     * Borrower constructor
+     * @param _id id in db
+     * @param _fname first name
+     * @param _lname last name
+     * @param _pnumber phone number
+     */
     public Borrower(int _id,String _fname, String _lname, String _pnumber) {
         this._id=_id;
         this._fname = _fname;
@@ -16,14 +23,10 @@ public class Borrower implements Parcelable {
 
     }
 
-    public Borrower(String _fname, String _lname, String _pnumber) {
-        this._fname = _fname;
-        this._lname = _lname;
-        this._pnumber = _pnumber;
 
-
-    }
-
+    /**
+     * Container for a message (data and object references) that can be sent through an IBinder
+     */
     protected Borrower(Parcel in) {
         _fname = in.readString();
         _lname = in.readString();
@@ -33,6 +36,9 @@ public class Borrower implements Parcelable {
         _id = in.readInt();
     }
 
+    /**
+     * creator for parcel
+     */
     public static final Creator<Borrower> CREATOR = new Creator<Borrower>() {
         @Override
         public Borrower createFromParcel(Parcel in) {
@@ -72,6 +78,9 @@ public class Borrower implements Parcelable {
     @Override
     public int describeContents() { return 0; }
 
+    /**
+     * add value to parcel
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_fname);

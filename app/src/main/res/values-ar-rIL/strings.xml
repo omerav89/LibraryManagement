@@ -48,8 +48,8 @@
     <string name="SMS_faild">فشل SMS ، يرجى المحاولة مرة أخرى</string>
     <string name="SMS_sent">"تم إرسال الرسائل القصيرة "</string>
     <string name="Hello_dear">" مرحبا عزيزي"</string>
-    <string name="you_need_return">" تحتاج إلى إعادة الكتاب"</string>
-    <string name="tomorrow">" غدا،"</string>
+    <string name="you_need_return">" تحتاج إلى إعادة الكتاب "</string>
+    <string name="tomorrow">في هذا التاريخ</string>
     <string name="tnx">شكرا لك تحياتي</string>
     <string name="are_delete">هل أنت متأكد أنك تريد حذف الكتاب:</string>
     <string name="The_book">" الكتاب"</string>
