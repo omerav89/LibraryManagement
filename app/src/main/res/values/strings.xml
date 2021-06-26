@@ -14,7 +14,7 @@
     <string name="add_btn">Add</string>
     <string name="qr_s">QR Scan</string>
     <string name="status_title">Status</string>
-    <string name="f_name">Full Name</string>
+    <string name="f_name">First Name</string>
     <string name="return_d">Return Date: </string>
     <string name="send_sms">Send Sms</string>
     <string name="change_d">Change Date</string>
@@ -46,7 +46,7 @@
     <string name="datenetup">The Date Not Updated Pleas try again later !</string>
     <string name="SMS_faild">SMS faild, please try again</string>
     <string name="SMS_sent">SMS sent</string>
-    <string name="Hello_dear">Hello dear </string>
+    <string name="Hello_dear">Hello dear</string>
     <string name="you_need_return"> you need to return the book</string>
     <string name="tomorrow">by,</string>
     <string name="tnx">Thank you, regards</string>

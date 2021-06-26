@@ -61,8 +61,8 @@ public class SendSMS extends AppCompatActivity {
             phone_number.setText(borrowingBook.get_borrower().get_pnumber());
         }
 
-        message = getString(R.string.Hello_dear)+ borrowingBook.get_borrower().get_fname()+" "+
-                borrowingBook.get_borrower().get_lname()+ getString(R.string.you_need_return)+
+        message = getString(R.string.Hello_dear)+" "+ borrowingBook.get_borrower().get_fname()+" "+
+                borrowingBook.get_borrower().get_lname()+" "+getString(R.string.you_need_return)+
                 borrowingBook.get_book().get_bname()+ getString(R.string.tomorrow) +
                 getString(R.string.tnx);
 
