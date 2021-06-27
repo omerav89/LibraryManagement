@@ -86,7 +86,7 @@
         android:layout_below="@+id/returndate"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
-        android:text="@string/change_d"
+        android:hint="@string/change_d"
         android:backgroundTint="#4AC4D8"
         android:textColor="@color/white"
         android:textStyle="bold"

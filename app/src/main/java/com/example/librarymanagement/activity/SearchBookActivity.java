@@ -104,6 +104,8 @@ public class SearchBookActivity extends AppCompatActivity  {
         }
 
 
+
+
         switch (incoming_activity)
         {
             case "status":
@@ -320,7 +322,6 @@ public class SearchBookActivity extends AppCompatActivity  {
                             intent=new Intent(SearchBookActivity.this,BookStatusActivity.class);
                             intent.putExtra(SENDING_RESULT,book_obj_as_json );
                             startActivity(intent);
-                            break;
                     }
 
                 }

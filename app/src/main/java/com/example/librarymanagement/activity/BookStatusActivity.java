@@ -47,6 +47,7 @@ public class BookStatusActivity extends AppCompatActivity {
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
     private final static String default_notification_channel_id = "default" ;
     final Calendar myCalendar = Calendar. getInstance () ;
+    private View view;
 /**check condition and send the sms **/
 
     @Override
@@ -100,53 +101,47 @@ public class BookStatusActivity extends AppCompatActivity {
  * */
     private void initDatePicker()
     {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
-            {
-                month = month + 1;
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            month = month + 1;
 
-                String newReturnDate = makeDateString(day, month, year);
-                newReturnDate.replace(" ","/");
-                String oldTakeDate =borrowingBook.get_tdate();
-                try {
+            String newReturnDate = makeDateString(day, month, year);
+            newReturnDate.replace(" ","/");
+            String oldTakeDate =borrowingBook.get_tdate();
+            try {
 
-                    Date newDate= new SimpleDateFormat("dd/MM/yyyy").parse(newReturnDate);
-                    Date oldDate= new SimpleDateFormat("dd/MM/yyyy").parse(oldTakeDate);
-                    if (oldDate.after(newDate))
+                Date newDate= new SimpleDateFormat("dd/MM/yyyy").parse(newReturnDate);
+                Date oldDate= new SimpleDateFormat("dd/MM/yyyy").parse(oldTakeDate);
+                if (oldDate.after(newDate))
+                {
+                    Toast.makeText(BookStatusActivity.this,getString(R.string.The_Date_is_not_Correct),Toast.LENGTH_LONG).show();
+                }
+                else
                     {
-                        Toast.makeText(BookStatusActivity.this,getString(R.string.The_Date_is_not_Correct),Toast.LENGTH_LONG).show();
-                    }
-                    else
+                        int ok = DataAccess.getInstance(BookStatusActivity.this).updateReturnDateByBookId(borrowingBook.get_book().get_id(),newReturnDate);
+                        if(ok==1)
                         {
-                            //stopAlarm(BookStatusActivity.this);
-
-                            int ok = DataAccess.getInstance(BookStatusActivity.this).updateReturnDateByBookId(borrowingBook.get_book().get_id(),newReturnDate);
-                            if(ok==1)
-                            {
-                                setDate();
-                                return_d.setText(newReturnDate);
-                                Toast.makeText(BookStatusActivity.this,getString(R.string.dateupdate),Toast.LENGTH_LONG).show();
-                                Intent intent= new Intent(BookStatusActivity.this,HomeActivity.class);
-                                startActivity(intent);
-                            }
-                            else {
-                                Toast.makeText(BookStatusActivity.this, getString(R.string.datenetup), Toast.LENGTH_LONG).show();
-                                Intent intent= new Intent(BookStatusActivity.this,HomeActivity.class);
-                                startActivity(intent);
-                            }
+                            setDate(newReturnDate);
+                            Toast.makeText(this,dateButton.getText().toString(),Toast.LENGTH_LONG).show();
+                            return_d.setText(newReturnDate);
+                            Toast.makeText(BookStatusActivity.this,getString(R.string.dateupdate),Toast.LENGTH_LONG).show();
 
                         }
+                        else {
+                            Toast.makeText(BookStatusActivity.this, getString(R.string.datenetup), Toast.LENGTH_LONG).show();
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                        }
+                        Intent intent_home= new Intent(BookStatusActivity.this,HomeActivity.class);
+                        startActivity(intent_home);
 
+                    }
 
-
-
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+
+
+
+
         };
 
         Calendar cal = Calendar.getInstance();
@@ -157,12 +152,10 @@ public class BookStatusActivity extends AppCompatActivity {
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-       // datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-
     }
-/**make the date to string **/
+
     /**
-     *
+     * make the date to string
      * @param day
      * @param month
      * @param year
@@ -177,7 +170,8 @@ public class BookStatusActivity extends AppCompatActivity {
     {
         datePickerDialog.show();
     }
-/**check condition and stop the alarm **/
+
+    /**check condition and stop the alarm **/
     public void stopAlarm(Context context) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent your_intent = new Intent(this, NotificationReceiver.class);
@@ -214,18 +208,15 @@ public class BookStatusActivity extends AppCompatActivity {
     }
 
     /**set the date for send notification day before return date  **/
-    public void setDate () {
+    public void setDate (String newDate) {
         try {
-            String []splitDate = dateButton.getText().toString().split("/");
+            String []splitDate = newDate.split("/");
             String now=getTodaysDate();
             Date current =  new SimpleDateFormat("dd/MM/yyyy").parse(now);
 
-            myCalendar.set(Calendar.YEAR, Integer.parseInt(splitDate[2]));
-            myCalendar.set(Calendar.MONTH, Integer.parseInt(splitDate[1]));
-            myCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(splitDate[0]));
-            myCalendar.add(Calendar.DAY_OF_MONTH,-1);
-
-            Date date = myCalendar .getTime() ;
+            int day=Integer.parseInt(splitDate[0])-1;
+            String date1= day+"/"+splitDate[1]+"/"+splitDate[2];
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(date1);
 
             long diff=date.getTime()-current.getTime();
 
